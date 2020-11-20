@@ -5,13 +5,18 @@
 <title>YOUR NAME Grocery</title>
 </head>
 <body>
+	<h1>Search for the products you want to buy:</h1>
 
-<h1>Search for the products you want to buy:</h1>
+	<form method="get" action="listprod.php">
+	<input type="text" name="productName" size="50">
+	<input type="submit" value="Submit"><input id="reset-but" type="reset" value="Reset"> (Leave blank for all products)
+	</form>
 
-<form method="get" action="listprod.php">
-<input type="text" name="productName" size="50">
-<input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
-</form>
+	<script type="text/javascript">
+		document.getElementById('reset-but').addEventListener("click", function() {
+			window.location.href=removeParam("productName",window.location.href);
+		});
+	</script>
 
 <?php
 	include 'include/functions.php';
@@ -19,37 +24,38 @@
 	/** Get product name to search for **/
 	if (isset($_GET['productName'])){
 		$name = $_GET['productName'];
-	}
+		
+		/** Create and validate connection **/
+		$con = try_connect();
+		if($con != false){
+			//todo: finish writing query, need to get product with the name $name ('productName')
 
-	//todo: ensure that connect and such will run after the input is acquired, repeatably.. each time submit is hit
-	$con = try_connect();
-	if($con != false){
-		//todo: finish writing query, need to get product with the name $name ('productName')
-		$sql = "select * from product";
-		$results = sqlsrv_query($con, $sql, array());
-		disconnect($con);
-	}
-
-	/** $name now contains the search string the user entered
-	 Use it to build a query and print out the results. **/
-
-	/** Create and validate connection **/
-
-	/** Print out the ResultSet **/
-
-	/** 
-	For each product create a link of the form
-	addcart.php?id=<productId>&name=<productName>&price=<productPrice>
-	Note: As some product names contain special characters, you may need to encode URL parameter for product name like this: urlencode($productName)
-	**/
-	
-	/** Close connection **/
-
-	/**
-        Useful code for formatting currency:
-	       number_format(yourCurrencyVariableHere,2)
-     **/
+			if($name == NULL){
+				$sql = "SELECT * from product;";
+				$results = sqlsrv_query($con, $sql, array());
+			} else {
+				$sql = "SELECT * from product where productName = ?;";
+				$ps = sqlsrv_prepare($con,$sql,array(&$name));
+				$results = sqlsrv_execute($ps);
+			}
+			
 ?>
+		<div id="product-listing">
+<?php
+			if($results != false){
+				/** Print out the ResultSet **/
+				while($product = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)){
+					debug("looping");
+					print_product($product);
+				}
+			} else {
+				echo("no results");
+			}
+			disconnect($con);
+		}
+	}
+?>
+		</div>
 
 </body>
 </html>
