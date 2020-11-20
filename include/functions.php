@@ -11,4 +11,7 @@
     function disconnect($con){
         sqlsrv_close($con);
     }
+    function print_product($prodtuple){
+        
+    }
 ?>
