@@ -14,12 +14,19 @@
 </form>
 
 <?php
-	include 'include/db_credentials.php';
+	include 'include/functions.php';
 
 	/** Get product name to search for **/
 	if (isset($_GET['productName'])){
 		$name = $_GET['productName'];
 	}
+	
+	$con = try_connect();
+	if($con != false){
+
+		disconnect($con);
+	}
+
 
 	/** $name now contains the search string the user entered
 	 Use it to build a query and print out the results. **/

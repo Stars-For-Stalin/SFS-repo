@@ -8,4 +8,7 @@
         }
         return $con;
     }
+    function disconnect($con){
+        sqlsrv_close($con);
+    }
 ?>

@@ -63,7 +63,7 @@
                         }
                     }
                     /** Close connection **/
-                    sqlsrv_close($con);
+                    disconnect($con);
                 }
             ?>
         </tbody>
