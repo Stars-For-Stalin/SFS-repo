@@ -22,26 +22,43 @@ if (isset($_SESSION['productList'])){
 	$productList = $_SESSION['productList'];
 }
 
-/**
-Determine if valid customer id was entered
+/**Determine if valid customer id was entered
 Determine if there are products in the shopping cart
-If either are not true, display an error message
-**/
+If either are not true, display an error message**/
 
-/** Make connection and validate **/
-
+$noCustId = !is_numeric($custId) || !isset($custId);
+$noProducts = empty($productList);
+if ($noCustId) {
+	echo "Error: Customer ID is invalid.";
+}
+else if ($noProducts) {
+	echo "Error: Shopping cart is empty.";
+}
+else {
+	/** Make connection and validate **/
+	$con = sqlsrv_connect($server, $connectionInfo);
+	if ($con === false) {
+		die(print_r(sqlsrv_errors(), true));
+	}
 /** Save order information to database**/
 
-
-	/**
-	// Use retrieval of auto-generated keys.
-	$sql = "INSERT INTO <TABLE> OUTPUT INSERTED.orderId VALUES( ... )";
-	$pstmt = sqlsrv_query( ... );
+	$sql1 = "SELECT "
+	$totalAmount = $_GET['price'];
+	$shiptoAddress = $_GET['address'];
+	$shiptoCity = $_GET['city'];
+	$shiptoState = $_GET['state'];
+	$shiptoPostalCode = $_GET['postalCode'];
+	$shiptoCountry = $_GET['country'];
+	$customerId = $_GET['customerId'];
+	$orderDate = date('Y-m-d H:i:s');
+	/**Use retrieval of auto-generated keys.**/
+	$sql = "INSERT INTO ordersummary (orderDate,totalAmount,shiptoAddress,shiptoCity,shiptoState,shiptoPostalCode,shiptoCountry,customerId) OUTPUT INSERTED.orderId VALUES(?,?,?,?,?,?,?,?)";
+	$pstmt = sqlsrv_query($con,$sql,array(&$orderDate,null,&$shiptoAddress,&$shiptocity,&$shiptoState,&$shiptoPostalCode,&$shiptoCountry,&$customerId));
 	if(!sqlsrv_fetch($pstmt)){
-		//Use sqlsrv_errors();
+		die(print_r(sqlsrv_errors(), true));
 	}
 	$orderId = sqlsrv_get_field($pstmt,0);
-	**/
+}
 
 /** Insert each item into OrderedProduct table using OrderId from previous INSERT **/
 
@@ -59,6 +76,7 @@ If either are not true, display an error message
 /** Print out order summary **/
 
 /** Clear session/cart **/
+$_SESSION['productList'] = null;
 ?>
 </body>
 </html>
