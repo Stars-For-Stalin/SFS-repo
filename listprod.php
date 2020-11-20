@@ -20,13 +20,15 @@
 	if (isset($_GET['productName'])){
 		$name = $_GET['productName'];
 	}
-	
+
+	//todo: ensure that connect and such will run after the input is acquired, repeatably.. each time submit is hit
 	$con = try_connect();
 	if($con != false){
-
+		//todo: finish writing query, need to get product with the name $name ('productName')
+		$sql = "select * from product";
+		$results = sqlsrv_query($con, $sql, array());
 		disconnect($con);
 	}
-
 
 	/** $name now contains the search string the user entered
 	 Use it to build a query and print out the results. **/
