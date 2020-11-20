@@ -1,3 +1,4 @@
+<script type="text/javascript" src="include/functions.js"></script>
 <?php
     function try_connect(){
         include 'db_credentials.php';
