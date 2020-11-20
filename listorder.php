@@ -24,11 +24,11 @@
         <tbody>
 
             <?php
-                include 'functions.php';
+                include 'include/functions.php';
                 #include 'include/db_credentials.php';
 
                 /** Create connection, and validate that it connected successfully **/
-                $con = connect_database();
+                $con = try_connect();
                 if ($con != false) {
 
                     /** Write query to retrieve all order headers **/
