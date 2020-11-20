@@ -11,7 +11,16 @@
     function disconnect($con){
         sqlsrv_close($con);
     }
+    function debug($msg){
+        if(false){
+            echo($msg);
+        }
+    }
     function print_product($prodtuple){
-        
+        echo('<br/>');
+        echo($prodtuple['productName']);
+        echo(" ");
+        echo($prodtuple['productPrice']);
+        echo($prodtuple['productImageURL']);
     }
 ?>
