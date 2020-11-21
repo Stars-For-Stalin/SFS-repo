@@ -25,14 +25,16 @@ if (isset($_SESSION['productList'])){
 /**Determine if valid customer id was entered
 Determine if there are products in the shopping cart
 If either are not true, display an error message**/
+include 'include/functions.php';
+
 $con =  try_connect();
 if ($con != false) {
-$sql0 = "SELECT customerId FROM customer WHERE customerId = ?;"
-$preparedStatement = sqlsrv_prepare($con, $sql0, &$custId);
+$sql0 = "SELECT customerId FROM customer WHERE customerId = ?";
+$preparedStatement = sqlsrv_prepare($con, $sql0, array(&$custId));
 $results = sqlsrv_execute($preparedStatement);
 $custIdInTable = false;
 	if($results != false){
-		while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
+		while ($row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
 			if($row['customerId'] == $custId) {
 				$custIdInTable = true;
 			}
@@ -50,11 +52,11 @@ $custIdInTable = false;
 	else {
 		/** Save order information to database**/
 
-		$sql1 = "SELECT * FROM customer WHERE customerId = ?;"
-		$preparedStatement1 = sqlsrv_prepare($con, $sql1, &$custId);
+		$sql1 = "SELECT * FROM customer WHERE customerId = ?;";
+		$preparedStatement1 = sqlsrv_prepare($con, $sql1, array(&$custId));
 		$results1 = sqlsrv_execute($preparedStatement1);
 		if($results1 != false){
-			while ($row1 = sqlsrv_fetch_array($results1, SQLSRV_FETCH_ASSOC)) {
+			while ($row1 = sqlsrv_fetch_array($preparedStatement1, SQLSRV_FETCH_ASSOC)) {
 				$shiptoAddress = $row1['address'];
 				$shiptoCity = $row1['city'];
 				$shiptoState = $row1['state'];
@@ -90,21 +92,24 @@ $custIdInTable = false;
 
 	/** Print out order summary **/
 	$sql4 = "SELECT * FROM ordersummary WHERE orderId = ?";
-	$preparedStatement4 = sqlsrv_prepare($con, $sql4, &$orderId);
-	$results4 = sqlsrv_query($preparedStatement4);
+	$preparedStatement4 = sqlsrv_prepare($con, $sql4, array(&$orderId));
+	$results4 = sqlsrv_execute($preparedStatement4);
 
 	if($results4 != false){
-		while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
-			echo ("<tr><td>" . $row['orderId'] .
-				"</td><td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') .
-				"</td><td>" . "$" . number_format($row['customerId']) .
-				"</td><td>" . $row['shiptoAdress'] .
-				"</td><td>" . $row['shiptoCity'] .
-				"</td><td>" . $row['shiptoState'] .
-				"</td><td>" . $row['shiptoPostalCode'] .
-				"</td><td>" . $row['shiptoCountry'] .
-				"</td><td>" . $row['customerId'] .
-				"</td></tr>");
+		while ($row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC)) {
+			echo (make_row(
+				array(
+					make_cell($row['orderId'], 'th', array("scope" => "row")),
+					make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
+					make_cell("$" . number_format($row['totalAmount'], 2)),
+					make_cell($row['shiptoAdress']),
+					make_cell($row['shiptoCity']),
+					make_cell($row['shiptoState']),
+					make_cell($row['shiptoPostalCode']),
+					make_cell($row['shiptoCountry']),
+					make_cell($row['customerId'])
+				)
+			));
 		}
 	}
 
