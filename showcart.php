@@ -3,7 +3,7 @@
 session_start();
 if(isset($_GET['deleteSession'])){
 	unset($_SESSION['productList']);
-	header("Location: " . $root . "showcart.php");
+	header("Location: showcart.php");
 }
 ?>
 
