@@ -17,11 +17,11 @@
 
 	<form method="get" action="listprod.php">
 	<input type="text" name="productName" size="50" value="<?php echo($name); ?>">
-	<input type="submit" value="Submit"><input id="reset-but" type="reset" value="Reset"> (Leave blank for all products)
+	<input type="submit" value="Submit"><input id="reset-btn" type="reset" value="Reset"> (Leave blank for all products)
 	</form>
 
 	<script type="text/javascript">
-		document.getElementById('reset-but').addEventListener("click", function() {
+		document.getElementById('reset-btn').addEventListener("click", function() {
 			window.location.href=removeParam("productName",window.location.href);
 		});
 	</script>
@@ -38,7 +38,9 @@
 			$results = sqlsrv_execute($ps);
 			if($results != false){
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
-					$found_products=true;
+					if(!$found_products){
+						$found_products=true;
+					}
 					debug("looping");
 					print_product($product);
 				}
