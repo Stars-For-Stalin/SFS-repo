@@ -5,10 +5,18 @@
 <title>YOUR NAME Grocery</title>
 </head>
 <body>
+<?php
+	include 'include/functions.php';
+
+	/** Get product name to search for **/
+	if (isset($_GET['productName'])){
+		$name = $_GET['productName'];
+	}
+?>
 	<h1>Search for the products you want to buy:</h1>
 
 	<form method="get" action="listprod.php">
-	<input type="text" name="productName" size="50">
+	<input type="text" name="productName" size="50" value="<?php echo($name); ?>">
 	<input type="submit" value="Submit"><input id="reset-but" type="reset" value="Reset"> (Leave blank for all products)
 	</form>
 
@@ -19,11 +27,7 @@
 	</script>
 
 <?php
-	include 'include/functions.php';
-
-	/** Get product name to search for **/
 	if (isset($_GET['productName'])){
-		$name = $_GET['productName'];
 		if($name != NULL){
 			$name = "%" . $name ."%";
 		}
