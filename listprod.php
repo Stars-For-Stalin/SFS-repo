@@ -28,25 +28,13 @@
 
 <?php
 	if (isset($_GET['productName'])){
-		if($name != NULL){
-			$name = "%" . $name ."%";
-		}
-
-		/** Create and validate connection **/
+		$name = "%" . $name ."%";
 		$con = try_connect();
 		if($con !== false){
-			//todo: finish writing query, need to get product with the name $name ('productName')
-
-			if($name == NULL){
-				debug("query: print all");
-				$sql = "SELECT * from product;";
-			} else {
-				debug("query: print " . $name);
-				$sql = "SELECT * from product where productName LIKE ?;";
-			}
+			debug("query: print " . $name);
+			$sql = "SELECT * from product where productName LIKE ?;";
 			$ps = sqlsrv_prepare($con,$sql,array(&$name));
 			$results = sqlsrv_execute($ps);
-			
 			if($results != false){
 				/** Print out the ResultSet **/
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
