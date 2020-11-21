@@ -24,27 +24,31 @@
 	/** Get product name to search for **/
 	if (isset($_GET['productName'])){
 		$name = $_GET['productName'];
-		
+		if($name != NULL){
+			$name = "%" . $name ."%";
+		}
+
 		/** Create and validate connection **/
 		$con = try_connect();
-		if($con != false){
+		if($con !== false){
 			//todo: finish writing query, need to get product with the name $name ('productName')
 
 			if($name == NULL){
+				debug("query: print all");
 				$sql = "SELECT * from product;";
-				$results = sqlsrv_query($con, $sql, array());
 			} else {
-				$sql = "SELECT * from product where productName = ?;";
-				$ps = sqlsrv_prepare($con,$sql,array(&$name));
-				$results = sqlsrv_execute($ps);
+				debug("query: print " . $name);
+				$sql = "SELECT * from product where productName LIKE ?;";
 			}
+			$ps = sqlsrv_prepare($con,$sql,array(&$name));
+			$results = sqlsrv_execute($ps);
 			
 ?>
 		<div id="product-listing">
 <?php
 			if($results != false){
 				/** Print out the ResultSet **/
-				while($product = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)){
+				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
 					debug("looping");
 					print_product($product);
 				}
