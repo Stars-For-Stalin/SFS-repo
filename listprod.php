@@ -54,7 +54,9 @@
             }
 			if(!$found_products){
 				echo("no results");
-			}
+			} else {
+                echo("</table>");
+            }
 			disconnect($con);
 		}
 ?>
