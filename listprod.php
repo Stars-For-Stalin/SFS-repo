@@ -33,29 +33,27 @@
 		</script>
 
 <?php
-		if (isset($_GET['productName'])){
-			$name = "%" . $name ."%";
-			$con = try_connect();
-			if($con !== false){
-				debug_to_console("query: print " . $name);
-				$sql = "SELECT * from product where productName LIKE ?;";
-				$ps = sqlsrv_prepare($con,$sql,array(&$name));
-				$results = sqlsrv_execute($ps);
-				if($results != false){
-					while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
-						if(!$found_products){
-							$found_products=true;
-	                        echo(make_tableheader(array("","Product Name","Price")));
-						}
-						debug_to_console("looping");
-						print_product($product);
+		$name = "%" . $name ."%";
+		$con = try_connect();
+		if($con !== false){
+			debug_to_console("query: print " . $name);
+			$sql = "SELECT * from product where productName LIKE ?;";
+			$ps = sqlsrv_prepare($con,$sql,array(&$name));
+			$results = sqlsrv_execute($ps);
+			if($results != false){
+				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
+					if(!$found_products){
+						$found_products=true;
+                        echo(make_tableheader(array("","Product Name","Price")));
 					}
+					debug_to_console("looping");
+					print_product($product);
 				}
-				if(!$found_products){
-					echo("no results");
-				}
-				disconnect($con);
 			}
+			if(!$found_products){
+				echo("no results");
+			}
+			disconnect($con);
 		}
 ?>
 	</div>
