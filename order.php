@@ -83,38 +83,73 @@ $custIdInTable = false;
 
 		/** Update total amount for order record **/
 		$totalAmount = 0;
+		debug_to_console("productList exists");
 		foreach ($productList as $id => $prod) {
-			$totalAmount += $prod['price'] * $prod['quantity'];
+			$id = $prod['id'];
+			$quantity = $prod['quantity'];
+			$sql = "SELECT productPrice from product where productId = ?;";
+			$ps = sqlsrv_prepare($con,$sql,array(&$id));
+			$results = sqlsrv_execute($ps);
+			debug_to_console("looping productList");
+			if($results != false){
+				debug_to_console("SQL query successful");
+				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
+					if(!$found_products){
+						$found_products=true;
+						debug_to_console("looping [hopefully] single row");
+						$price = $product['productPrice'];
+						$totalAmount += $quantity*$price;
+					}
+				}
+			} 
+			if(!$found_products){
+				echo "No products found.";
+			}
 		}
-		$sql3 = "UPDATE ordersummary SET totalAmount=? WHERE orderId=$orderId";
-		$pstmt3 = sqlsrv_prepare($con,$sql2,array(&$orderId,&$prod['id'],&$prod['quantity'],&$prod['price']));
-	}
+		$sql3 = "UPDATE ordersummary SET totalAmount=? WHERE orderId=?";
+		$pstmt3 = sqlsrv_prepare($con,$sql3,array(&$totalAmount,&$orderId));
+		$results3 = sqlsrv_execute($pstmt3);
 
-	/** Print out order summary **/
-	$sql4 = "SELECT * FROM ordersummary WHERE orderId = ?";
-	$preparedStatement4 = sqlsrv_prepare($con, $sql4, array(&$orderId));
-	$results4 = sqlsrv_execute($preparedStatement4);
+		/** Print out order summary **/
+		$sql4 = "SELECT * FROM ordersummary WHERE orderId = ?";
+		$preparedStatement4 = sqlsrv_prepare($con, $sql4, array(&$orderId));
+		$results4 = sqlsrv_execute($preparedStatement4);
 
-	if($results4 != false){
-		while ($row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC)) {
-			echo (make_row(
-				array(
-					make_cell($row['orderId'], 'th', array("scope" => "row")),
-					make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
-					make_cell("$" . number_format($row['totalAmount'], 2)),
-					make_cell($row['shiptoAdress']),
-					make_cell($row['shiptoCity']),
-					make_cell($row['shiptoState']),
-					make_cell($row['shiptoPostalCode']),
-					make_cell($row['shiptoCountry']),
-					make_cell($row['customerId'])
-				)
-			));
+		if($results4 != false){
+			while ($row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC)) {
+				echo("<h1>Your Order Summary</h1>");
+				echo("<table><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>");
+				echo("<tr><td align=\"right\">". $row['orderId'] . "</td>");
+				echo("<td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') . "</td>");
+				echo("<td align=\"right\">" . "$" . number_format($row['totalAmount'], 2) . "</td>");
+				echo("<td align=\"right\">" . $row['shiptoAddress'] . "</td>");
+				echo("<td align=\"right\">" . $row['shiptoCity'] . "</td>");
+				echo("<td align=\"right\">" . $row['shiptoState'] . "</td>");
+				echo("<td align=\"right\">" . $row['shiptoPostalCode'] . "</td>");
+				echo("<td align=\"right\">" . $row['shiptoCountry'] . "</td>");
+				echo("<td align=\"right\">" . $row['customerId'] . "</td></tr>");
+
+				/*
+				echo (make_row(
+					array(
+						make_cell($row['orderId'], 'th', array("scope" => "row")),
+						make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
+						make_cell("$" . number_format($row['totalAmount'], 2)),
+						make_cell($row['shiptoAddress']),
+						make_cell($row['shiptoCity']),
+						make_cell($row['shiptoState']),
+						make_cell($row['shiptoPostalCode']),
+						make_cell($row['shiptoCountry']),
+						make_cell($row['customerId'])
+					)
+				));
+				*/
+			}
 		}
-	}
 
-	/** Clear session/cart **/
-	$_SESSION['productList'] = null;
+		/** Clear session/cart **/
+		$_SESSION['productList'] = null;
+	}
 
 	/** Close connection **/
 	disconnect($con);
