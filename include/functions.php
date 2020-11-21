@@ -115,10 +115,10 @@ function make_table($rows, $attributes = null){
 	return $output;
 }
 function make_tableheader($cols){
-	$attr = array();
+	/*$attr = array();
 	foreach ($cols as $i){
-		//array_push($attr, "scope" => "col");
-	}
+		$attr['scope']="col");
+	}*/
 	//make_row();
 }
 ?>
