@@ -1,8 +1,16 @@
 <script type="text/javascript" src="include/functions.js"></script>
 <?php
 $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-function try_connect()
-{
+function debug_to_console($data){
+	if(false){
+		$output = $data;
+		if (is_array($output))
+			$output = implode(',', $output);
+
+		echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+	}
+}
+function try_connect(){
 	include 'db_credentials.php';
 	/** Create connection, and validate that it connected successfully **/
 	$con = sqlsrv_connect($server, $connectionInfo);
@@ -11,18 +19,10 @@ function try_connect()
 	}
 	return $con;
 }
-function disconnect($con)
-{
+function disconnect($con){
 	sqlsrv_close($con);
 }
-function debug($msg)
-{
-	if (false) {
-		echo ($msg);
-	}
-}
-function print_product($prodtuple)
-{
+function print_product($prodtuple){
 	echo ('<br/>');
 	echo ('<a href="' . get_addcart_url($prodtuple) . '">Add To Cart</a>');
 	echo (" ");
@@ -34,8 +34,7 @@ function print_product($prodtuple)
 		echo ($picURL);
 	}
 }
-function get_addcart_url($prodtuple)
-{
+function get_addcart_url($prodtuple){
 	//id=<>name=<>&price=<>
 	$url = $root . "addcart.php?id=" . $prodtuple['productId'] . "&name=" . $prodtuple['productName'] . "&price=" . $prodtuple['productPrice'];
 	return $url;
@@ -54,8 +53,7 @@ function get_addcart_url($prodtuple)
  * }
  * @return string Return the constructed string for the cell.
  */
-function make_cell($data, $type = "td", $attributes = null)
-{
+function make_cell($data, $type = "td", $attributes = null){
 	$output = '<' . $type;
 	if (!empty($attributes)) {
 		foreach ($attributes as $key => $value) {
@@ -83,8 +81,7 @@ function make_cell($data, $type = "td", $attributes = null)
  * }
  * @return string Return the constructed string for the row.
  */
-function make_row($cells, $attributes = null)
-{
+function make_row($cells, $attributes = null){
 	$output = '<tr';
 	if (!empty($attributes)) {
 		foreach ($attributes as $key => $value) {
@@ -101,8 +98,7 @@ function make_row($cells, $attributes = null)
 	return $output;
 }
 
-function make_table($rows, $attributes = null)
-{
+function make_table($rows, $attributes = null){
 	$output = '<table';
 	if (!empty($attributes)) {
 		foreach ($attributes as $key => $value) {
@@ -117,14 +113,5 @@ function make_table($rows, $attributes = null)
 
 	$output .= '</table>';
 	return $output;
-}
-
-function debug_to_console($data)
-{
-	$output = $data;
-	if (is_array($output))
-		$output = implode(',', $output);
-
-	echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
 }
 ?>
