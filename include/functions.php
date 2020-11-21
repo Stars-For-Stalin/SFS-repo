@@ -22,6 +22,9 @@
         echo($prodtuple['productName']);
         echo(" ");
         echo($prodtuple['productPrice']);
-        echo($prodtuple['productImageURL']);
+        $picURL = $prodtuple['productImageURL'];
+        if($picURL != false){
+            echo($picURL);
+        }
     }
 ?>
