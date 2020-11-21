@@ -27,6 +27,7 @@
 	</script>
 
 <?php
+	//
 	if (isset($_GET['productName'])){
 		$name = "%" . $name ."%";
 		$con = try_connect();
@@ -36,12 +37,13 @@
 			$ps = sqlsrv_prepare($con,$sql,array(&$name));
 			$results = sqlsrv_execute($ps);
 			if($results != false){
-				/** Print out the ResultSet **/
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
+					$found_products=true;
 					debug("looping");
 					print_product($product);
 				}
-			} else {
+			}
+			if(!$found_products){
 				echo("no results");
 			}
 			disconnect($con);
