@@ -47,9 +47,6 @@
 			$ps = sqlsrv_prepare($con,$sql,array(&$name));
 			$results = sqlsrv_execute($ps);
 			
-?>
-		<div id="product-listing">
-<?php
 			if($results != false){
 				/** Print out the ResultSet **/
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
@@ -63,7 +60,6 @@
 		}
 	}
 ?>
-		</div>
 
 </body>
 </html>
