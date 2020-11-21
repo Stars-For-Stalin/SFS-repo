@@ -1,6 +1,10 @@
 <?php
 // Get the current list of products
 session_start();
+if(isset($_GET['deleteSession'])){
+	unset($_SESSION['productList']);
+	header("Location: " . $root . "showcart.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -11,8 +15,9 @@ session_start();
 <body>
 
 <?php
+include 'include/functions.php';
 $productList = null;
-if (isset($_SESSION['productList'])){
+if (isset($_SESSION['productList']) && !isset($_GET['deleteSession'])){
 	$productList = $_SESSION['productList'];
 	echo("<h1>Your Shopping Cart</h1>");
 	echo("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
