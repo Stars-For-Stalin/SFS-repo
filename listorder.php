@@ -2,26 +2,29 @@
 <html>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<title>YOUR NAME Grocery Order List</title>
 </head>
 
 <body>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+	<div class="container">
+		<h1>Order List</h1>
 
-	<h1>Order List</h1>
-
-	<table border="1">
-		<thead>
-			<tr>
-				<th>Order Id</th>
-				<th>Order Date</th>
-				<th>Customer Id</th>
-				<th>Customer Name</th>
-				<th>Total Amount</th>
-			</tr>
-		</thead>
-
-		<tbody>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">Order Id</th>
+					<th scope="col">Order Date</th>
+					<th scope="col">Customer Id</th>
+					<th scope="col">Customer Name</th>
+					<th scope="col">Total Amount</th>
+				</tr>
+			</thead>
 
 			<?php
 			include 'include/functions.php';
@@ -38,39 +41,63 @@
 
 				if ($results != false) {
 					while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
-						echo ('<tr>');
-						echo ('<td>' . $row['orderId'] . '</td>');
-						echo ('<td>' . date_format($row['orderDate'], 'Y-m-d H:i:s') . '</td>');
-						echo ('<td>' . $row['customerId'] . '</td>');
-						echo ('<td>' . $row['firstName'] . " " . $row['lastName'] . '</td>');
-						echo ('<td>' . "$" . number_format($row['totalAmount'], 2) . '</td>');
-						echo ('</tr>');
+						echo (make_row(
+							array(
+								make_cell($row['orderId'], 'th', array("scope" => "row")),
+								make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
+								make_cell($row['customerId']),
+								make_cell($row['firstName'] . " " . $row['lastName']),
+								make_cell("$" . number_format($row['totalAmount'], 2))
+							)
+						));
+
+						/*
+							echo ('<tr>');
+							echo ('<th scope="row">' . $row['orderId'] . '</th>');
+							echo ('<td>' . date_format($row['orderDate'], 'Y-m-d H:i:s') . '</td>');
+							echo ('<td>' . $row['customerId'] . '</td>');
+							echo ('<td>' . $row['firstName'] . " " . $row['lastName'] . '</td>');
+							echo ('<td>' . "$" . number_format($row['totalAmount'], 2) . '</td>');
+							echo ('</tr>');
+						*/
 
 						/* Query for individual order */
 						$sql2 = "SELECT * FROM orderproduct WHERE orderId = ?;";
 						$preparedStatement = sqlsrv_prepare($con, $sql2, array(&$row['orderId']));
 						$result2 = sqlsrv_execute($preparedStatement);
 
-						echo ('<tr align="right"><td colspan="5"><table border="1"><thead><tr><th>Product Id</th> <th>Quantity</th> <th>Price</th></tr></thead>');
-						echo ('<tbody>');
+						echo ('<tr><td colspan="3"></td><td colspan="2"><table class="table table-bordered"><thead><tr><th>Product Id</th> <th>Quantity</th> <th>Price</th></tr>');
+
 
 						while ($row2 = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
+							echo (make_row(
+								array(
+									make_cell($row2['productId']),
+									make_cell($row2['quantity']),
+									make_cell("$" . number_format($row2['price'], 2))
+								)
+							));
+
+							/*
 							echo ('<tr>');
 							echo ('<td>' . $row2['productId'] . '</td>');
 							echo ('<td>' . $row2['quantity'] . '</td>');
 							echo ('<td>' . "$" . number_format($row2['price'], 2) . '</td>');
 							echo ('</tr>');
+							*/
 						}
 
-						echo ('</tbody></table></td></tr>');
+						echo ('</table></td></tr>');
 					}
 				}
 				/** Close connection **/
 				disconnect($con);
 			}
 			?>
-		</tbody>
-	</table>
+		</table>
+	</div>
+
+
 </body>
 
 </html>
