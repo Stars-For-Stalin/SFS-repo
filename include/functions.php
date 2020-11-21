@@ -2,7 +2,7 @@
 <?php
 $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
 function debug_to_console($data){
-	if(false){
+	if(true){
 		$output = $data;
 		if (is_array($output))
 			$output = implode(',', $output);
@@ -113,5 +113,12 @@ function make_table($rows, $attributes = null){
 
 	$output .= '</table>';
 	return $output;
+}
+function make_tableheader($cols){
+	$attr = array();
+	foreach ($cols as $i){
+		//array_push($attr, "scope" => "col");
+	}
+	//make_row();
 }
 ?>
