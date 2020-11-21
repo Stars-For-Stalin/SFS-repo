@@ -39,8 +39,8 @@
 			debug_to_console("query: print " . $name);
 			$sql = "SELECT * from product where productName LIKE ?;";
 			$ps = sqlsrv_prepare($con,$sql,array(&$name));
-			$results = sqlsrv_execute($ps);
-			if($results != false){
+			$exec_success = sqlsrv_execute($ps);
+			if($exec_success != false){
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
 					if(!$found_products){
 						$found_products=true;
@@ -49,7 +49,9 @@
 					debug_to_console("looping");
 					print_product($product);
 				}
-			}
+			} else {
+                debug_to_console("SQL query failed.");
+            }
 			if(!$found_products){
 				echo("no results");
 			}
