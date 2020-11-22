@@ -29,20 +29,25 @@ $con =  try_connect();
 if ($con != false) {
 
 $numCustId = !is_numeric($custId);
-$sql0 = "SELECT customerId FROM customer WHERE customerId = ?";
-$preparedStatement = sqlsrv_prepare($con, $sql0, array(&$custId));
-$results = sqlsrv_execute($preparedStatement);
-$custIdInTable = false;
-	if($results != false){
-		while ($row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
-			if($row['customerId'] == $custId) {
-				$custIdInTable = true;
+if ($numCustId) {
+	echo "Error: Customer ID is invalid.";
+}else{
+
+	$sql0 = "SELECT customerId FROM customer WHERE customerId = ?";
+	$preparedStatement = sqlsrv_prepare($con, $sql0, array(&$custId));
+	$results = sqlsrv_execute($preparedStatement);
+	$custIdInTable = false;
+		if($results != false){
+			while ($row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
+				if($row['customerId'] == $custId) {
+					$custIdInTable = true;
+				}
 			}
 		}
-	}
 
-	$noCustId = $numCustId || !$custIdInTable;
+	$noCustId = !$custIdInTable;
 	$noProducts = empty($productList);
+	}
 	if ($noCustId) {
 		echo "Error: Customer ID is invalid.";
 	}
@@ -68,7 +73,7 @@ $custIdInTable = false;
 		$orderDate = date('Y-m-d H:i:s');
 		/**Use retrieval of auto-generated keys.**/
 		$sql = "INSERT INTO ordersummary (orderDate,totalAmount,shiptoAddress,shiptoCity,shiptoState,shiptoPostalCode,shiptoCountry,customerId) OUTPUT INSERTED.orderId VALUES(?,?,?,?,?,?,?,?)";
-		$pstmt = sqlsrv_query($con,$sql,array(&$orderDate,null,&$shiptoAddress,&$shiptocity,&$shiptoState,&$shiptoPostalCode,&$shiptoCountry,&$custId));
+		$pstmt = sqlsrv_query($con,$sql,array(&$orderDate,null,&$shiptoAddress,&$shiptoCity,&$shiptoState,&$shiptoPostalCode,&$shiptoCountry,&$custId));
 			if(!sqlsrv_fetch($pstmt)){
 				die(print_r(sqlsrv_errors(), true));
 			}
@@ -84,12 +89,11 @@ $custIdInTable = false;
 		/** Update total amount for order record **/
 		$totalAmount = 0;
 		debug_to_console("productList exists");
-		foreach ($productList as $id => $prod) {
-			/*
+		foreach ($productList as $productId => $prod) {
 			$id = $prod['id'];
 			$quantity = $prod['quantity'];
 			$sql = "SELECT productPrice from product where productId = ?;";
-			$ps = sqlsrv_prepare($con,$sql,array(&$id));
+			$ps = sqlsrv_prepare($con,$sql,array(&$productId));
 			$results = sqlsrv_execute($ps);
 			debug_to_console("looping productList");
 			if($results != false){
@@ -105,8 +109,8 @@ $custIdInTable = false;
 			} 
 			if(!$found_products){
 				echo "No products found.";
-			} */
-			$totalAmount += $prod['quantity']*$prod['price'];
+			}
+			//$totalAmount += $prod['quantity']*$prod['price'];
 		}
 		$sql3 = "UPDATE ordersummary SET totalAmount=? WHERE orderId=?";
 		$pstmt3 = sqlsrv_prepare($con,$sql3,array(&$totalAmount,&$orderId));
@@ -118,26 +122,25 @@ $custIdInTable = false;
 		$results4 = sqlsrv_execute($preparedStatement4);
 
 		if($results4 != false){
-			while ($row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC)) {
+			$row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC);
 				echo("<h1>Your Order Summary</h1>");
 				echo('<table class="table"><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>');
-				echo("<tr><td align=\"right\">". $row['orderId'] . "</td>");
+				echo("<tr><td>" . $row['orderId'] . "</td>");
 				echo("<td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') . "</td>");
-				echo("<td align=\"right\">" . "$" . number_format($row['totalAmount'], 2) . "</td>");
-				echo("<td align=\"right\">" . $row['shiptoAddress'] . "</td>");
-				echo("<td align=\"right\">" . $row['shiptoCity'] . "</td>");
-				echo("<td align=\"right\">" . $row['shiptoState'] . "</td>");
-				echo("<td align=\"right\">" . $row['shiptoPostalCode'] . "</td>");
-				echo("<td align=\"right\">" . $row['shiptoCountry'] . "</td>");
-				echo("<td align=\"right\">" . $row['customerId'] . "</td></tr>");
+				echo("<td>" . "$" . number_format($row['totalAmount'], 2) . "</td>");
+				echo("<td>" . $row['shiptoAddress'] . "</td>");
+				echo("<td>" . $row['shiptoCity'] . "</td>");
+				echo("<td>" . $row['shiptoState'] . "</td>");
+				echo("<td>" . $row['shiptoPostalCode'] . "</td>");
+				echo("<td>" . $row['shiptoCountry'] . "</td>");
+				echo("<td>" . $row['customerId'] . "</td></tr>");
 
-				echo("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
+				echo('<table class="table"><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>');
 				foreach ($productList as $id => $prod) {
 					echo("<tr><td>". $prod['id'] . "</td>");
 					echo("<td>" . $prod['name'] . "</td>");
-					echo("<td align=\"center\">". $prod['quantity'] . "</td>");
+					echo("<td>". $prod['quantity'] . "</td>");
 				}
-			}
 		}
 
 		/** Clear session/cart **/
