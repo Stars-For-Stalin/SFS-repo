@@ -22,17 +22,27 @@ function try_connect(){
 function disconnect($con){
 	sqlsrv_close($con);
 }
+function wrap($data, $tag, $attributes = null){
+    $output = '<' . $tag;
+
+    if (!empty($attributes)) {
+        foreach ($attributes as $key => $value) {
+            $output .= ' ' . $key . '="' . $value . '"';
+        }
+    }
+
+    $output.= '>' . $data. '</' . $tag . '>';
+    return $output;
+}
+function make_link($url,$text){
+	return '<a href="' . $url . '">' . $text . '</a>';
+}
 function print_product($prodtuple){
-	echo ('<br/>');
-	echo ('<a href="' . get_addcart_url($prodtuple) . '">Add To Cart</a>');
-	echo (" ");
-	echo ($prodtuple['productName']);
-	echo (" ");
-	echo ($prodtuple['productPrice']);
-	$picURL = $prodtuple['productImageURL'];
-	if ($picURL != false) {
-		echo ($picURL);
-	}
+	$cells=array();
+	array_push($cells, make_cell(make_link(get_addcart_url($prodtuple),"Add To Cart")));
+	array_push($cells, make_cell($prodtuple['productImageURL'] . $prodtuple['productName']));
+	array_push($cells, make_cell($prodtuple['productPrice']));
+	echo(make_row($cells));
 }
 function get_addcart_url($prodtuple){
 	//id=<>name=<>&price=<>
@@ -121,8 +131,9 @@ function make_tableheader($cols){
 		debug_to_console("processing column headings.. on: " . $cheading);
 		array_push($cells,make_cell($cheading,'th',$header_attr));
 	}
-	echo('<table class="table table-bordered"><thead>');
-	echo(make_row($cells));
-	echo("</thead>");
+	$str  = '<table class="table table-bordered"><thead>';
+	$str .= make_row($cells);
+	$str .= "</thead>";
+	return $str;
 }
 ?>

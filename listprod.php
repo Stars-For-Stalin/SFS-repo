@@ -33,6 +33,7 @@
 			$sql = "SELECT * from product where productName LIKE ?;";
 			$ps = sqlsrv_prepare($con,$sql,array(&$name));
 			$exec_success = sqlsrv_execute($ps);
+            $arr = array();
 			if($exec_success != false){
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
 					if(!$found_products){
