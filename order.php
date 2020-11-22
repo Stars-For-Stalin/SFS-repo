@@ -9,14 +9,13 @@ session_start();
 
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>YOUR NAME Grocery Order Processing</title>
-</head>
+<?php
+	$title="YOUR NAME Grocery Order Processing";
+	include 'include/header.php';
+?>
 <body>
 
 <?php
-include 'include/db_credentials.php';
 $productList = null;
 if (isset($_SESSION['productList'])){
 	$productList = $_SESSION['productList'];
@@ -25,7 +24,6 @@ if (isset($_SESSION['productList'])){
 /**Determine if valid customer id was entered
 Determine if there are products in the shopping cart
 If either are not true, display an error message**/
-include 'include/functions.php';
 
 $con =  try_connect();
 if ($con != false) {
@@ -118,7 +116,7 @@ $custIdInTable = false;
 		if($results4 != false){
 			while ($row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC)) {
 				echo("<h1>Your Order Summary</h1>");
-				echo("<table><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>");
+				echo('<table class="table"><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>');
 				echo("<tr><td align=\"right\">". $row['orderId'] . "</td>");
 				echo("<td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') . "</td>");
 				echo("<td align=\"right\">" . "$" . number_format($row['totalAmount'], 2) . "</td>");
