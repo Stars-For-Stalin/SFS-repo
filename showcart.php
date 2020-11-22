@@ -1,7 +1,7 @@
 <?php
 // Get the current list of products
 session_start();
-if (isset($_GET['deleteSession'])) {
+if (isset($_GET['deleteCart'])) {
 	unset($_SESSION['productList']);
 	header("Location: showcart.php");
 }
@@ -15,7 +15,7 @@ include 'include/header.php'
 		<form method='get' action="modifycart.php">
 			<?php
 			$productList = null;
-			if (isset($_SESSION['productList']) && !isset($_GET['deleteSession'])) {
+			if (isset($_SESSION['productList'])) {
 				$productList = $_SESSION['productList'];
 				echo ("<h1>Your Shopping Cart</h1>");
 
@@ -51,13 +51,13 @@ include 'include/header.php'
 				</div>
 				<div class="col-lg-2 col-sm-3">
 					<?php
-					if (isset($_SESSION['productList']) && !isset($_GET['deleteSession']))
+					if (isset($_SESSION['productList']))
 						echo ('<input style="width:100%" type="submit" class="btn btn-info btn-md" value="Update Cart">');
 					?>
 				</div>
 				<div class="col-lg-2 col-sm-3">
 					<?php
-					if (isset($_SESSION['productList']) && !isset($_GET['deleteSession']))
+					if (isset($_SESSION['productList']))
 						echo ('<a style="width:100%" class="btn btn-primary btn-md" href="checkout.php">Check Out</a>');
 					?>
 				</div>

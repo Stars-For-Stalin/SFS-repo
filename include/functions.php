@@ -35,8 +35,8 @@ function wrap($data, $tag, $attributes = null){
     $output.= '>' . $data. '</' . $tag . '>';
     return $output;
 }
-function make_link($url,$text){
-	return '<a href="' . $url . '">' . $text . '</a>';
+function make_link($url,$text,$aclass=null){
+	return '<a href="' . $url . '" class="'.$aclass.'">' . $text . '</a>';
 }
 function print_product($prodtuple){
 	$cells=array();
