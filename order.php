@@ -29,6 +29,8 @@ include 'include/functions.php';
 
 $con =  try_connect();
 if ($con != false) {
+
+$numCustId = !is_numeric($custId);
 $sql0 = "SELECT customerId FROM customer WHERE customerId = ?";
 $preparedStatement = sqlsrv_prepare($con, $sql0, array(&$custId));
 $results = sqlsrv_execute($preparedStatement);
@@ -41,7 +43,7 @@ $custIdInTable = false;
 		}
 	}
 
-	$noCustId = !is_numeric($custId) || !$custIdInTable;
+	$noCustId = $numCustId || !$custIdInTable;
 	$noProducts = empty($productList);
 	if ($noCustId) {
 		echo "Error: Customer ID is invalid.";
@@ -85,6 +87,7 @@ $custIdInTable = false;
 		$totalAmount = 0;
 		debug_to_console("productList exists");
 		foreach ($productList as $id => $prod) {
+			/*
 			$id = $prod['id'];
 			$quantity = $prod['quantity'];
 			$sql = "SELECT productPrice from product where productId = ?;";
@@ -104,7 +107,8 @@ $custIdInTable = false;
 			} 
 			if(!$found_products){
 				echo "No products found.";
-			}
+			} */
+			$totalAmount += $prod['quantity']*$prod['price'];
 		}
 		$sql3 = "UPDATE ordersummary SET totalAmount=? WHERE orderId=?";
 		$pstmt3 = sqlsrv_prepare($con,$sql3,array(&$totalAmount,&$orderId));
@@ -129,21 +133,12 @@ $custIdInTable = false;
 				echo("<td align=\"right\">" . $row['shiptoCountry'] . "</td>");
 				echo("<td align=\"right\">" . $row['customerId'] . "</td></tr>");
 
-				/*
-				echo (make_row(
-					array(
-						make_cell($row['orderId'], 'th', array("scope" => "row")),
-						make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
-						make_cell("$" . number_format($row['totalAmount'], 2)),
-						make_cell($row['shiptoAddress']),
-						make_cell($row['shiptoCity']),
-						make_cell($row['shiptoState']),
-						make_cell($row['shiptoPostalCode']),
-						make_cell($row['shiptoCountry']),
-						make_cell($row['customerId'])
-					)
-				));
-				*/
+				echo("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
+				foreach ($productList as $id => $prod) {
+					echo("<tr><td>". $prod['id'] . "</td>");
+					echo("<td>" . $prod['name'] . "</td>");
+					echo("<td align=\"center\">". $prod['quantity'] . "</td>");
+				}
 			}
 		}
 
