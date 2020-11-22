@@ -25,7 +25,11 @@ include 'include/header.php'
 				echo ("<tr><td>" . $prod['id'] . "</td>");
 				echo ("<td>" . $prod['name'] . "</td>");
 
-				echo ("<td align=\"center\">" . $prod['quantity'] . "</td>");
+				echo (make_cell(
+					'<input class="form-control" type="number" value="' . $prod['quantity'] . '" id="prod_' . $prod['id'] . '">',
+					'td',
+					array('style' => 'width:10%')
+				));
 				$price = $prod['price'];
 
 				echo ("<td align=\"right\">$" . number_format($price, 2) . "</td>");
@@ -35,13 +39,29 @@ include 'include/header.php'
 			}
 			echo ("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">$" . number_format($total, 2) . "</td></tr>");
 			echo ("</table>");
-
-			echo ("<h2><a href=\"checkout.php\">Check Out</a></h2>");
 		} else {
 			echo ("<H1>Your shopping cart is empty!</H1>");
 		}
 		?>
-		<h2><a href="listprod.php">Continue Shopping</a></h2>
+
+		<div class="row">
+			<div class="col-8">
+				<a class="btn btn-secondary btn-lg" href="listprod.php">Continue Shopping</a>
+			</div>
+			<div class="col-2">
+				<?php
+				if (isset($_SESSION['productList']) && !isset($_GET['deleteSession']))
+					echo ('<a style="width:100%" class="btn btn-info btn-lg" href="checkout.php">Update Cart</a>');
+				?>
+			</div>
+			<div class="col-2">
+				<?php
+				if (isset($_SESSION['productList']) && !isset($_GET['deleteSession']))
+					echo ('<a style="width:100%" class="btn btn-primary btn-lg" href="checkout.php">Check Out</a>');
+				?>
+			</div>
+		</div>
+
 	</div>
 </body>
 
