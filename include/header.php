@@ -18,3 +18,17 @@
         ?>
     </title>
 </head>
+<?php
+	/** @var $root url-root, from functions.php which should have been included into the page THIS page is included in already. */
+	$classtype = "navbar-brand";
+	$plink = make_link($root."listprod.php","Stars", $classtype);
+	$olink = make_link($root."listorder.php","Your Orders", $classtype);
+	$clink = make_link($root."showcart.php","My Cart", $classtype);
+?>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<?php
+		echo($plink);
+		echo($olink);
+		echo($clink);
+	?>
+</nav>
