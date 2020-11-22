@@ -96,10 +96,10 @@ $custIdInTable = false;
 				while($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)){
 					if(!$found_products){
 						$found_products=true;
-						debug_to_console("looping [hopefully] single row");
-						$price = $product['productPrice'];
-						$totalAmount += $quantity*$price;
 					}
+					debug_to_console("looping [hopefully] single row");
+					$price = $product['productPrice'];
+					$totalAmount += $quantity*$price;
 				}
 			} 
 			if(!$found_products){
