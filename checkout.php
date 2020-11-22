@@ -1,5 +1,10 @@
 <?php
+session_start();
 $title = 'Grocery CheckOut Line';
+
+if (isset($_SESSION['customerId']))
+    header('Location: order.php');
+
 include 'include/header.php';
 ?>
 
@@ -30,7 +35,11 @@ include 'include/header.php';
                                 <label>Your password</label>
                                 <input name="password" class="form-control" placeholder="******" type="password">
                             </div>
-
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label> <input type="checkbox" name="save_password"> Save password </label>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block"> Login </button>
                             </div>
