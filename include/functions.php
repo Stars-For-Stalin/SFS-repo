@@ -121,7 +121,7 @@ function make_tableheader($cols){
 		debug_to_console("processing column headings.. on: " . $cheading);
 		array_push($cells,make_cell($cheading,'th',$header_attr));
 	}
-	echo("<table><thead>");
+	echo('<table class="table table-bordered"><thead>');
 	echo(make_row($cells));
 	echo("</thead>");
 }
