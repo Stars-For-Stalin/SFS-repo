@@ -25,7 +25,7 @@ include 'include/header.php';
                         <button class="float-right btn btn-outline-primary" onclick='document.getElementById("login").reset();'>Reset</button>
                         <h4 class="card-title mb-4 mt-1">Sign in</h4>
 
-                        <form id='login' data-bitwarden-watching="1" action="order.php" method="get">
+                        <form id='login' data-bitwarden-watching="1" action="authenticate.php" method="get">
 
                             <div class="form-group">
                                 <label>Your customer ID</label>
