@@ -42,7 +42,7 @@ function print_product($prodtuple){
 	$cells=array();
 	array_push($cells, make_cell(make_link(get_addcart_url($prodtuple),"Add To Cart")));
 	array_push($cells, make_cell($prodtuple['productImageURL'] . $prodtuple['productName']));
-	array_push($cells, make_cell($prodtuple['productPrice']));
+	array_push($cells, make_cell('$' .$prodtuple['productPrice']));
 	echo(make_row($cells));
 }
 function get_addcart_url($prodtuple){
