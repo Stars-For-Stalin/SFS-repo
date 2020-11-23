@@ -76,6 +76,7 @@
                             /** Update total amount for order record **/
                             $totalAmount = 0;
                             debug_to_console("productList exists");
+                            $orderList = array();
                             foreach ($productList as $productId => $prod) {
                                 $id = $prod['id'];
                                 $quantity = $prod['quantity'];
@@ -91,6 +92,11 @@
                                         }
                                         debug_to_console("looping [hopefully] single row");
                                         $price = $product['productPrice'];
+                                        array_push($orderList,array(
+                                            'name' => $prod['name'],
+                                            'quantity' => $prod['quantity'],
+                                            'price' => $price * $quantity
+                                        ));
                                         $totalAmount += $quantity * $price;
                                     }
                                 }
@@ -108,32 +114,32 @@
                             $preparedStatement4 = sqlsrv_prepare($con, $sql4, array(&$orderId));
                             $results4 = sqlsrv_execute($preparedStatement4);
 
-                            if ($results4 != false) {
-                                $row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC);
-                                echo ("<h1>Your Order Summary</h1>");
-                                echo ('<table class="table"><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>');
-                                echo ("<tr><td>" . $row['orderId'] . "</td>");
-                                echo ("<td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') . "</td>");
-                                echo ("<td>" . "$" . number_format($row['totalAmount'], 2) . "</td>");
-                                echo ("<td>" . $row['shiptoAddress'] . "</td>");
-                                echo ("<td>" . $row['shiptoCity'] . "</td>");
-                                echo ("<td>" . $row['shiptoState'] . "</td>");
-                                echo ("<td>" . $row['shiptoPostalCode'] . "</td>");
-                                echo ("<td>" . $row['shiptoCountry'] . "</td>");
-                                echo ("<td>" . $row['customerId'] . "</td></tr>");
-
-                                echo ('<table class="table"><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>');
-                                foreach ($productList as $id => $prod) {
-                                    echo ("<tr><td>" . $prod['id'] . "</td>");
-                                    echo ("<td>" . $prod['name'] . "</td>");
-                                    echo ("<td>" . $prod['quantity'] . "</td>");
-                                }
-                            } else {
-                                //todo: remove when authenticate.php is complete
-                                echo ("Error: Customer ID not found.");
+                            if (!$results4) {
+								debug_to_console("SQL query failed.");
+								die();
                             }
+                            $row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC);
+                            echo("<h1>Your Order Summary</h1>");
+                            echo('<table class="table"><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>');
+                            echo("<tr><td>" . $row['orderId'] . "</td>");
+                            echo("<td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') . "</td>");
+                            echo("<td>" . "$" . number_format($row['totalAmount'], 2) . "</td>");
+                            echo("<td>" . $row['shiptoAddress'] . "</td>");
+                            echo("<td>" . $row['shiptoCity'] . "</td>");
+                            echo("<td>" . $row['shiptoState'] . "</td>");
+                            echo("<td>" . $row['shiptoPostalCode'] . "</td>");
+                            echo("<td>" . $row['shiptoCountry'] . "</td>");
+                            echo("<td>" . $row['customerId'] . "</td></tr>");
+                            echo("</table>");
+                            echo(make_tableheader(array("Product Name","Quantity","Price")));
+                            foreach ($orderList as $id => $prod) {
+                                echo ("<tr><td>" . $prod['name'] . "</td>");
+                                echo ("<td>" . $prod['quantity'] . "</td>");
+                                echo ("<td>$" . number_format($prod['price'],2) . "</td>");
+                            }
+                            echo("</table>");
                             /** Clear session/cart **/
-                            $_SESSION['productList'] = null;
+                            //$_SESSION['productList'] = null;
                         }
                     }
                     /** Close connection **/
