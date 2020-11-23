@@ -20,6 +20,8 @@ if (empty($_GET)) {
                 $_SESSION['customerId'] = $custId;
                 if (isset($_GET['save_password']))
                     $_SESSION['save_password'] = true;
+                else unset($_SESSION['save_password']);
+                
                 echo ('a ok');
                 echo ('<script>window.location = "order.php";</script>');
             } else {
