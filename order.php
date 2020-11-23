@@ -36,17 +36,11 @@
 						if (!sqlsrv_execute($ps)) {
 							goto sqlerror;
 						}
-						$row = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC);
-						if(is_null($row)){
+						$shipData = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC);
+						if(is_null($shipData)){
 						    debug_to_console("order.php had a problem looking up the customer ID. This shouldn't be happening.");
 						    goto sqlerror;
                         }
-						//todo: remove these vars, and rename row to orderData, then use it instead of the vars
-						$shiptoAddress = $row['address'];
-						$shiptoCity = $row['city'];
-						$shiptoState = $row['state'];
-						$shiptoPostalCode = $row['postalCode'];
-						$shiptoCountry = $row['country'];
 						$orderDate = date('Y-m-d');
 
 						/** Calculate total amount for order record **/
@@ -79,9 +73,9 @@
 						$sql = "INSERT INTO ordersummary (orderDate,totalAmount,shiptoAddress,shiptoCity,shiptoState,shiptoPostalCode,shiptoCountry,customerId) OUTPUT INSERTED.orderId VALUES(?,?,?,?,?,?,?,?)";
 						$ps = sqlsrv_query($con, $sql,
                             array(
-                                &$orderDate, $totalAmount, &$shiptoAddress,
-                                &$shiptoCity, &$shiptoState, &$shiptoPostalCode,
-                                &$shiptoCountry, &$custId
+                                &$orderDate, $totalAmount, &$shipData['address'],
+								&$shipData['city'], &$shipData['state'], &$shipData['postalCode'],
+								&$shipData['country'], $custId
                             )
                         );
 						if (!sqlsrv_fetch($ps)) {
@@ -106,10 +100,6 @@
                             die();
                         }
 						$ps = sqlsrv_prepare($con, $sql, $args);
-                        debug_to_console("Executing insertions");
-						debug_to_console($args);
-						debug_to_console($sql);
-                        debug_to_console($ps);
 						if(!sqlsrv_execute($ps)) {
 							goto sqlerror;
 						}
