@@ -3,6 +3,10 @@
 	/** Get customer id **/
 	if (isset($_SESSION['customerId'])) {
 		$custId = $_SESSION['customerId'];
+		if (!isset($_SESSION['save_password'])) {
+			unset($_SESSION['customerId']);
+			unset($_SESSION['save_password']);
+		}
 	}
 	if (isset($_SESSION['productList'])){
 		$productList = $_SESSION['productList'];
