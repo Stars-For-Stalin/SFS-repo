@@ -1,8 +1,10 @@
 <script type="text/javascript" src="include/functions.js"></script>
 <?php
 $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+$debugging = false;
 function debug_to_console($data){
-	if(true){
+    global $debugging;
+	if($debugging){
 		$output = $data;
 		if (is_array($output))
 			$output = implode(',', $output);

@@ -120,7 +120,7 @@
                             }
                             $row = sqlsrv_fetch_array($preparedStatement4, SQLSRV_FETCH_ASSOC);
                             echo("<h1>Your Order Summary</h1>");
-                            echo('<table class="table"><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>');
+                            echo('<table class="table table-bordered"><tr><th>Order Id</th><th>Order Date</th><th>Total Amount</th><th>Address</th><th>City</th><th>State</th><th>Postal Code</th><th>Country</th><th>Customer Id</th>');
                             echo("<tr><td>" . $row['orderId'] . "</td>");
                             echo("<td>" . date_format($row['orderDate'], 'Y-m-d H:i:s') . "</td>");
                             echo("<td>" . "$" . number_format($row['totalAmount'], 2) . "</td>");
@@ -139,7 +139,8 @@
                             }
                             echo("</table>");
                             /** Clear session/cart **/
-                            //$_SESSION['productList'] = null;
+                            $_SESSION['productList'] = null;
+
                         }
                     }
                     /** Close connection **/
