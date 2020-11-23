@@ -30,19 +30,6 @@
                 $con = try_connect();
                 if ($con !== false) {
                     if (is_numeric($custId) && !empty($productList)) {
-						/** Get Customer information **/
-                        $sql = "SELECT * FROM customer WHERE customerId = ?";
-                        $ps = sqlsrv_prepare($con, $sql, array(&$custId));
-						if (!sqlsrv_execute($ps)) {
-							goto sqlerror;
-						}
-						$shipData = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC);
-						if(is_null($shipData)){
-						    debug_to_console("order.php had a problem looking up the customer ID. This shouldn't be happening.");
-						    goto sqlerror;
-                        }
-						$orderDate = date('Y-m-d');
-
 						/** Calculate total amount for order record **/
 						$sql = "SELECT * from product where productId IN (?);";
 						$args = get_array_of_inner_keys($productList,"id");
@@ -69,11 +56,24 @@
 						    goto sqlerror;
                         }
 
+						/** Get Customer information **/
+						$sql = "SELECT * FROM customer WHERE customerId = ?";
+						$ps = sqlsrv_prepare($con, $sql, array(&$custId));
+						if (!sqlsrv_execute($ps)) {
+							goto sqlerror;
+						}
+						$shipData = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC);
+						if(is_null($shipData)){
+							debug_to_console("order.php had a problem looking up the customer ID. This shouldn't be happening.");
+							oops();
+							die();
+						}
+
 						/** Save order information to database**/
 						$sql = "INSERT INTO ordersummary (orderDate,totalAmount,shiptoAddress,shiptoCity,shiptoState,shiptoPostalCode,shiptoCountry,customerId) OUTPUT INSERTED.orderId VALUES(?,?,?,?,?,?,?,?)";
 						$ps = sqlsrv_query($con, $sql,
                             array(
-                                &$orderDate, $totalAmount, &$shipData['address'],
+								date('Y-m-d'), $totalAmount, &$shipData['address'],
 								&$shipData['city'], &$shipData['state'], &$shipData['postalCode'],
 								&$shipData['country'], $custId
                             )
@@ -96,7 +96,8 @@
 							array_push($args, $prod['price']);
                         }
                         if(empty($sql)){
-                            debug_to_console("major problem");
+                            debug_to_console("major problem, empty sql statement");
+                            oops();
                             die();
                         }
 						$ps = sqlsrv_prepare($con, $sql, $args);
@@ -110,48 +111,12 @@
                         if (!sqlsrv_execute($ps)) {
                             goto sqlerror;
                         }
-                        $row = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC);
-                        if(is_null($row)){
+                        $orderData = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC);
+                        if(is_null($orderData)){
 						    debug_to_console("order.php couldn't retrieve the order. This shouldn't happen.");
 						    goto sqlerror;
                         }
-                        echo("<h1>Your Order Summary</h1>");
-                        echo(make_tableheader(array(
-                            "Order Id",
-                            "Order Date",
-                            "Total Amount",
-                            "Address",
-                            "City",
-                            "State",
-                            "Postal Code",
-                            "Country",
-                            "Customer Id"
-                        )));
-                        $cells = array();
-                        array_push($cells, make_cell($row['orderId']));
-                        array_push($cells, make_cell(date_format($row['orderDate'], 'Y-m-d')));
-                        array_push($cells, make_cell("$" . $row['totalAmount']));
-                        array_push($cells, make_cell($row['shiptoAddress']));
-                        array_push($cells, make_cell($row['shiptoCity']));
-                        array_push($cells, make_cell($row['shiptoState']));
-                        array_push($cells, make_cell($row['shiptoPostalCode']));
-                        array_push($cells, make_cell($row['shiptoCountry']));
-                        array_push($cells, make_cell($row['customerId']));
-                        echo(make_row($cells));
-                        echo("</table>");
-                        echo(make_tableheader(array(
-                            "Product Name",
-                            "Quantity",
-                            "Price"
-                        )));
-                        foreach ($orderList as $id => $prod) {
-                            $cells = array();
-                            array_push($cells, make_cell($prod['name']));
-                            array_push($cells, make_cell($prod['quantity']));
-                            array_push($cells, make_cell(number_format($prod['price'], 2)));
-                            echo(make_row($cells));
-                        }
-                        echo("</table>");
+                        print_order_summary($orderData,$orderList);
                         /** Clear session/cart **/
                         if(!$debugging) {
                             $_SESSION['productList'] = null;
@@ -174,7 +139,7 @@
                 disconnect($con);
                 debug_to_console("SQL query failed");
                 debug_to_console(sqlsrv_errors());
-				echo("<h1><br/><br/><br/><br/>Ooops! Something went wrong.<br/>Try again, or contact contact our support staff.</h1>");
+				oops();
             }
 		?>
 	</div>
