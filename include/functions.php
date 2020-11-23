@@ -47,6 +47,7 @@ function print_product($prodtuple){
 }
 function get_addcart_url($prodtuple){
 	//id=<>name=<>&price=<>
+    global $root;
 	$url = $root . "addcart.php?id=" . $prodtuple['productId'] . "&name=" . $prodtuple['productName'] . "&price=" . $prodtuple['productPrice'];
 	return $url;
 }
