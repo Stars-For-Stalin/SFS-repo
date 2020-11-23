@@ -39,13 +39,15 @@
                     debug_to_console("query: print " . $name);
                     $sql = "SELECT * from product where productName LIKE ?;";
                     $ps = sqlsrv_prepare($con, $sql, array(&$name));
-                    $exec_success = sqlsrv_execute($ps);
-                    $arr = array();
-                    if ($exec_success != false) {
+                    if (sqlsrv_execute($ps)) {
                         while ($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)) {
                             if (!$found_products) {
                                 $found_products = true;
-                                echo(make_tableheader(array("", "Product Name", "Price")));
+								echo(make_tableheader(array(
+									"",
+									"Product Name",
+									"Price"
+								)));
                             }
                             debug_to_console("looping");
                             print_product($product);

@@ -6,11 +6,15 @@ function debug_to_console($data){
     global $debugging;
 	if($debugging){
 		$output = $data;
-		if (is_array($output))
+		if (is_array($output)) {
+			//todo: ?make function recursive (check if elements are arrays)?
 			$output = implode(',', $output);
-
-		echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+		}
+		echo("<script>console.log(\"Debug Objects: $output \");</script>");
 	}
+}
+function oops(){
+	echo("<h1><br/><br/><br/><br/>Ooops! Something went wrong.<br/>Try again, or contact contact our support staff.</h1>");
 }
 function try_connect(){
 	include 'db_credentials.php';
@@ -24,6 +28,19 @@ function try_connect(){
 }
 function disconnect($con){
 	sqlsrv_close($con);
+}
+function get_array_of_inner_keys($arr,$key){
+    $rtn = array();
+    foreach($arr as $k => $innerarr){
+        debug_to_console($innerarr);
+        if(is_array($innerarr)) {
+			array_push($rtn, $innerarr[$key]);
+		} else {
+            debug_to_console("error: no inner array");
+        }
+    }
+    debug_to_console($rtn);
+    return $rtn;
 }
 function wrap($data, $tag, $attributes = null){
     $output = '<' . $tag;
@@ -46,6 +63,45 @@ function print_product($prodtuple){
 	array_push($cells, make_cell($prodtuple['productImageURL'] . $prodtuple['productName']));
 	array_push($cells, make_cell('$' .$prodtuple['productPrice']));
 	echo(make_row($cells));
+}
+function print_order_summary($orderData,$orderList){
+	echo("<h1>Your Order Summary</h1>");
+	echo(make_tableheader(array(
+		"Order Id",
+		"Order Date",
+		"Total Amount",
+		"Address",
+		"City",
+		"State",
+		"Postal Code",
+		"Country",
+		"Customer Id"
+	)));
+	$cells = array();
+	array_push($cells, make_cell($orderData['orderId']));
+	array_push($cells, make_cell(date_format($orderData['orderDate'], 'Y-m-d')));
+	array_push($cells, make_cell("$" . $orderData['totalAmount']));
+	array_push($cells, make_cell($orderData['shiptoAddress']));
+	array_push($cells, make_cell($orderData['shiptoCity']));
+	array_push($cells, make_cell($orderData['shiptoState']));
+	array_push($cells, make_cell($orderData['shiptoPostalCode']));
+	array_push($cells, make_cell($orderData['shiptoCountry']));
+	array_push($cells, make_cell($orderData['customerId']));
+	echo(make_row($cells));
+	echo("</table>");
+	echo(make_tableheader(array(
+		"Product Name",
+		"Quantity",
+		"Price"
+	)));
+	foreach ($orderList as $id => $prod) {
+		$cells = array();
+		array_push($cells, make_cell($prod['name']));
+		array_push($cells, make_cell($prod['quantity']));
+		array_push($cells, make_cell(number_format($prod['price'], 2)));
+		echo(make_row($cells));
+	}
+	echo("</table>");
 }
 function get_addcart_url($prodtuple){
 	//id=<>name=<>&price=<>
