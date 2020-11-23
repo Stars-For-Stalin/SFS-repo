@@ -1,15 +1,16 @@
 <script type="text/javascript" src="include/functions.js"></script>
 <?php
 $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
-$debugging = false;
+$debugging = true;
 function debug_to_console($data){
     global $debugging;
 	if($debugging){
 		$output = $data;
-		if (is_array($output))
+		if (is_array($output)) {
+			//todo: ?make function recursive (check if elements are arrays)?
 			$output = implode(',', $output);
-
-		echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+		}
+		echo("<script>console.log(\"Debug Objects: $output \");</script>");
 	}
 }
 function try_connect(){
@@ -24,6 +25,19 @@ function try_connect(){
 }
 function disconnect($con){
 	sqlsrv_close($con);
+}
+function get_array_of_inner_keys($arr,$key){
+    $rtn = array();
+    foreach($arr as $k => $innerarr){
+        debug_to_console($innerarr);
+        if(is_array($innerarr)) {
+			array_push($rtn, $innerarr[$key]);
+		} else {
+            debug_to_console("error: no inner array");
+        }
+    }
+    debug_to_console($rtn);
+    return $rtn;
 }
 function wrap($data, $tag, $attributes = null){
     $output = '<' . $tag;
