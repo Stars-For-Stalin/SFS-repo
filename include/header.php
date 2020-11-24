@@ -18,16 +18,12 @@
         ?>
     </title>
 </head>
-<?php
-	$classtype = "navbar-brand";
-	$plink = make_link($root."listprod.php","Stars", $classtype);
-	$olink = make_link($root."listorder.php","Your Orders", $classtype);
-	$clink = make_link($root."showcart.php","My Cart", $classtype);
-?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<?php
-		echo($plink);
-		echo($olink);
-		echo($clink);
+		$classtype = "navbar-brand";
+		echo(make_link($root."index.php","Stars For Stalin!", $classtype));
+		echo(make_link($root."listprod.php","Stars", $classtype));
+		echo(make_link($root."listorder.php","Your Orders", $classtype));
+		echo(make_link($root."showcart.php","My Cart", $classtype));
 	?>
 </nav>
