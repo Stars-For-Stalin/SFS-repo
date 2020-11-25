@@ -36,7 +36,7 @@ function validateLogin()
 	$con = sqlsrv_connect($server, $connectionInfo);
 
 	// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
-	$sql = "SELECT customerId, userid, password FROM customer WHERE userid	 = ?";
+	$sql = "SELECT customerId, userid, password FROM customer WHERE userid = ?";
 	$preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
 	$result = sqlsrv_execute($preparedStatement);
 	$retStr = null;
@@ -54,9 +54,12 @@ function validateLogin()
 	if ($retStr != null) {
 		$_SESSION["loginMessage"] = null;
 		$_SESSION["authenticatedUser"] = $user;
-	} else
+		if (isset($_POST['save_password']))
+			$_SESSION['save_password'] = true;
+	} else {
+		unset($_SESSION['save_password']);
 		$_SESSION["loginMessage"] = "Could not connect to the system using that username/password.";
-
+	}
 
 	return $retStr;
 }
