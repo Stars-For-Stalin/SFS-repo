@@ -12,7 +12,10 @@ function debug_to_console($data){
 		echo("<script>console.log(\"Debug Objects: $output \");</script>");
 	}
 }
-function oops(){
+function oops($msg = null){
+	if(!is_null($msg)){
+		debug_to_console($msg);
+	}
 	echo("<h1><br/><br/><br/><br/>Ooops! Something went wrong.<br/>Try again, or contact contact our support staff.</h1>");
 }
 function try_connect(){
@@ -59,7 +62,7 @@ function make_link($url,$text,$aclass=null){
 function print_product($prodtuple){
 	$cells=array();
 	array_push($cells, make_cell(make_link(get_addcart_url($prodtuple),"Add To Cart")));
-	array_push($cells, make_cell($prodtuple['productImageURL'] . $prodtuple['productName']));
+	array_push($cells, make_cell(make_link(get_product_url($prodtuple['productId']), $prodtuple['productName'])));
 	array_push($cells, make_cell('$' .$prodtuple['productPrice']));
 	echo(make_row($cells));
 }
@@ -108,7 +111,18 @@ function get_addcart_url($prodtuple){
 	$url = $root . "addcart.php?id=" . $prodtuple['productId'] . "&name=" . $prodtuple['productName'] . "&price=" . $prodtuple['productPrice'];
 	return $url;
 }
-
+function get_product_url($product){
+	global $root;
+	if(!is_numeric($product)) {
+		$url = $root . "product.php?id=" . $product['id'];
+	} else {
+		$url = $root . "product.php?id=" . $product;
+	}
+	return $url;
+}
+function addjs($code){
+	echo("<script type=\"text/javascript\">$code</script>");
+}
 /**
  * A function that generates formatted HTML text for table cells.
  * 
