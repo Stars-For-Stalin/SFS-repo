@@ -19,12 +19,18 @@
         ?>
     </title>
 </head>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<?php
-		$classtype = "navbar-brand";
-		echo(make_link($root."index.php","Stars For Stalin!", $classtype));
-		echo(make_link($root."listprod.php","Stars", $classtype));
-		echo(make_link($root."listorder.php","Your Orders", $classtype));
-		echo(make_link($root."showcart.php","My Cart", $classtype));
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+    <?php
+        echo(make_link($root."index.php","Stars For Stalin!", "navbar-brand"));
+
+        echo('<div class="navbar-nav mr-auto">');
+		echo(make_link($root."listprod.php","Stars", "nav-item nav-link"));
+		echo(make_link($root."listorder.php","Your Orders", "nav-item nav-link"));
+        echo(make_link($root."showcart.php","My Cart", "nav-item nav-link"));
+        echo('</div>');
+           
+        echo ('<div class="navbar-nav">');
+        echo(make_link($root."logout.php","Logout", "nav-item nav-link"));
+        echo('</div>');
 	?>
 </nav>
