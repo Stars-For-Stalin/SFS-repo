@@ -43,6 +43,10 @@ include 'include/header.php';
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary btn-block"> Login </button>
 							</div>
+							<?php
+							if (isset($_GET['redirect']))
+								echo ('<input type="hidden" name="redirect" value="' . $_GET['redirect'] . '">');
+							?>
 						</form>
 					</article>
 				</div>
