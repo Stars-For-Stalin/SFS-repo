@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <?php
-        $title = "Stars for Stalin - Get Yours Before They're Gone";
+        $title = "Get Yours Before They're Gone: Stars For Stalin";
         include 'include/header.php';
 
         /** Get product name to search for **/
