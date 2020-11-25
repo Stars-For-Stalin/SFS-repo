@@ -1,4 +1,3 @@
-<script type="text/javascript" src="include/functions.js"></script>
 <?php
 $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
 $debugging = false;
