@@ -1,50 +1,57 @@
-<?php session_start();  ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-	<title>Login Screen</title>
-</head>
+<?php
+session_start();
+include 'include/header.php';
+?>
 
 <body>
 
-	<div style="margin:0 auto;text-align:center;display:inline">
+	<div class='container'>
+		<div class="row mt-4">
+			<aside class="col-sm-4"></aside>
 
-		<h3>Please Login to System</h3>
+			<aside class="col-sm-4">
+				<?php
+				if ($_SESSION['loginMessage']  != null) {
+					echo ('<div class="alert alert-danger" role="alert">');
+					echo ($_SESSION['loginMessage']);
+					echo ('</div>');
 
-		<?php
-		if ($_SESSION['loginMessage']  != null) {
-			echo ("<p>" . $_SESSION['loginMessage'] . "</p>");
-			unset($_SESSION['loginMessage']);
-		}
-		?>
+					unset($_SESSION['loginMessage']);
+				}
+				?>
 
-		<br>
-		<form name="MyForm" method="post" action="validateLogin.php">
-			<table style="display:inline">
-				<tr>
-					<td>
-						<div align="right">
-							<font face="Arial, Helvetica, sans-serif" size="2">Username:</font>
-						</div>
-					</td>
-					<td><input type="text" name="username" size=10 maxlength=10></td>
-				</tr>
-				<tr>
-					<td>
-						<div align="right">
-							<font face="Arial, Helvetica, sans-serif" size="2">Password:</font>
-						</div>
-					</td>
-					<td><input type="password" name="password" size=10 maxlength="10"></td>
-				</tr>
-			</table>
-			<br />
-			<input class="submit" type="submit" name="Submit2" value="Log In">
-		</form>
+				<div class="card">
+					<article class="card-body">
+						<button class="float-right btn btn-outline-primary" onclick='document.getElementById("login").reset();'>Reset</button>
+						<h4 class="card-title mb-4 mt-1">Sign in</h4>
 
+						<form id='login' data-bitwarden-watching="1" action="validateLogin.php" method="post">
+
+							<div class="form-group">
+								<label>Your Username</label>
+								<input name="username" class="form-control" placeholder="Username" maxlength=10>
+							</div>
+							<div class="form-group">
+								<label>Your password</label>
+								<input name="password" class="form-control" placeholder="******" type="password">
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label> <input type="checkbox" name="save_password"> Save password </label>
+								</div>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary btn-block"> Login </button>
+							</div>
+						</form>
+					</article>
+				</div>
+			</aside>
+
+			<aside class="col-sm-4"></aside>
+
+		</div>
 	</div>
-
 </body>
 
 </html>

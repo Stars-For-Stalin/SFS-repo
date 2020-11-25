@@ -28,7 +28,7 @@
 		$con = sqlsrv_connect($server, $connectionInfo);
 		
 		// TODO: Check if userId and password match some customer account. If so, set retStr to be the username.
-		$sql = "SELECT customerId, password FROM customer WHERE customerId = ?";
+		$sql = "SELECT customerId, userid, password FROM customer WHERE customerId = ?";
 		$preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
 		$result = sqlsrv_execute($preparedStatement);
 		$retStr = null;
@@ -36,7 +36,7 @@
 		if ($result || !empty($result)) {
 			while ($row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
 				if ($pw === $row['password'])
-					$retStr = $row['customerId'];
+					$retStr = $row['userid'];
 			}
 		}
 		
