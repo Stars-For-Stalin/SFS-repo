@@ -38,6 +38,8 @@
     if (isset($_SESSION['authenticatedUser'])) {
         echo ('<span class="navbar-text">Hello ' .  $_SESSION['authenticatedUser'] . "!</span>");
         echo (make_link($root . "logout.php", "Logout", "nav-item nav-link"));
+    } else {
+        echo (make_link($root . "login.php", "Login", "nav-item nav-link"));
     }
 
     echo ('</div>');
