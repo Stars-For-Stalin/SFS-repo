@@ -48,8 +48,7 @@ include 'include/header.php';
 				/** Calculate total amount for order record **/
 				$sql = "SELECT * from product where productId IN (?);";
 				$args = get_array_of_inner_keys($productList, "id");
-				$sql_args = str_pad("", 2 * count($args), '?,');
-				$sql_args = substr($sql_args, 0, strlen($sql_args) - 1);
+				$sql_args = str_pad("", 2 * count($args)-1, '?,');
 				$sql = str_replace("?", $sql_args, $sql);
 				$ps = sqlsrv_prepare($con, $sql, $args);
 				if (sqlsrv_execute($ps)) {
@@ -138,9 +137,6 @@ include 'include/header.php';
 				if (!$debugging) {
 					$_SESSION['productList'] = null;
 				}
-
-				/** Close connection **/
-				disconnect($con);
 			} elseif (!is_numeric($custId)) {
 				echo ("Error: Invalid Customer ID.");
 			} else {
@@ -151,6 +147,8 @@ include 'include/header.php';
 		} else {
 			echo ("Error: Shopping cart is empty.");
 		}
+		/** Close connection **/
+		disconnect($con);
 		if (false) {
 			sqlerror:
 			disconnect($con);
