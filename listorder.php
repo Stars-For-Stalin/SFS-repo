@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html>
-
 <?php
 $title = "Stars For Stalin - All Orders";
 include 'include/header.php';

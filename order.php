@@ -1,31 +1,27 @@
 <?php
-	session_start();
+session_start();
 
-	if (isset($_SESSION["authenticatedUser"])) {
-		$user = $_SESSION["authenticatedUser"];
+if (isset($_SESSION["authenticatedUser"])) {
+	$user = $_SESSION["authenticatedUser"];
 
-		if (!isset($_SESSION['save_password'])) {
-			unset($_SESSION['authenticatedUser']);
-			unset($_SESSION['save_password']);
-		}
-	} else {
-		header('Location: login.php?redirect=checkout.php');
+	if (!isset($_SESSION['save_password'])) {
+		unset($_SESSION['authenticatedUser']);
+		unset($_SESSION['save_password']);
 	}
-	if (isset($_SESSION['productList'])) {
-		$productList = $_SESSION['productList'];
-	}
-?>
+} else {
+	header('Location: login.php?redirect=checkout.php');
+}
+if (isset($_SESSION['productList'])) {
+	$productList = $_SESSION['productList'];
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<?php
-	$title = "Order Summary: Stars For Stalin";
-	include 'include/header.php';
+$title = "Order Summary: Stars For Stalin";
+include 'include/header.php';
 ?>
 
 <body>
-<div class='container'>
-	<?php
+	<div class='container'>
+		<?php
 		/**Determine if valid customer id was entered
 		 * Determine if there are products in the shopping cart
 		 * If either are not true, display an error message**/
@@ -48,7 +44,7 @@
 				/** Calculate total amount for order record **/
 				$sql = "SELECT * from product where productId IN (?);";
 				$args = get_array_of_inner_keys($productList, "id");
-				$sql_args = str_pad("", 2 * count($args)-1, '?,');
+				$sql_args = str_pad("", 2 * count($args) - 1, '?,');
 				$sql = str_replace("?", $sql_args, $sql);
 				$ps = sqlsrv_prepare($con, $sql, $args);
 				if (sqlsrv_execute($ps)) {
@@ -156,8 +152,8 @@
 			debug_to_console(sqlsrv_errors());
 			oops();
 		}
-	?>
-</div>
+		?>
+	</div>
 </body>
 
 </html>
