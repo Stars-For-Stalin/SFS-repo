@@ -7,7 +7,7 @@ if ($authenticatedUser != null) {
 	if (isset($_POST['redirect']))
 		header("Location: $redirect");
 	else
-		header('Location: index.php');
+		header('Location: listprod.php');
 } else {
 	if (isset($_POST['redirect']))
 		header("Location: login.php?redirect=$redirect");
