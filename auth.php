@@ -6,6 +6,6 @@
 	{
 		$loginMessage = "You have not been authorized to access the URL " . $_SERVER['REQUEST_URI'];
         $_SESSION['loginMessage']  = $loginMessage;        
-		header('Location: login.php');
+		header('Location: login.php?redirect=' . $_SERVER['REQUEST_URI']);
 	}
 ?>
