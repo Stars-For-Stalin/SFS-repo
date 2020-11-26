@@ -81,10 +81,10 @@ include('auth.php');
                 </table>
                 </body>
                 </html>";
-}
-
 
 // Make sure to close connection
+disconnect($con);
+}
 ?>
 </body>
 </html>
