@@ -54,10 +54,8 @@ function validateLogin()
 	if ($retStr != null) {
 		$_SESSION["loginMessage"] = null;
 		$_SESSION["authenticatedUser"] = $user;
-		if (isset($_POST['save_password']))
-			$_SESSION['save_password'] = true;
+
 	} else {
-		unset($_SESSION['save_password']);
 		$_SESSION["loginMessage"] = "Could not connect to the system using that username/password.";
 	}
 

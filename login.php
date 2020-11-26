@@ -35,11 +35,6 @@ include 'include/header.php';
 								<input name="password" class="form-control" placeholder="******" type="password">
 							</div>
 							<div class="form-group">
-								<div class="checkbox">
-									<label> <input type="checkbox" name="save_password"> Save password </label>
-								</div>
-							</div>
-							<div class="form-group">
 								<button type="submit" class="btn btn-primary btn-block"> Login </button>
 							</div>
 							<?php

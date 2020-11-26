@@ -3,11 +3,6 @@ session_start();
 
 if (isset($_SESSION["authenticatedUser"])) {
 	$user = $_SESSION["authenticatedUser"];
-
-	if (!isset($_SESSION['save_password'])) {
-		unset($_SESSION['authenticatedUser']);
-		unset($_SESSION['save_password']);
-	}
 } else {
 	header('Location: login.php?redirect=checkout.php');
 }
