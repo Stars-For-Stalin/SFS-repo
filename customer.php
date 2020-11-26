@@ -11,7 +11,7 @@
 <body>
 
 <?php     
-    include 'header.php';
+    include 'include/header.php';
     include 'include/db_credentials.php';
 ?>
 

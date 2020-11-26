@@ -6,7 +6,7 @@ if (isset($_GET['deleteCart'])) {
 	header("Location: showcart.php");
 }
 
-$title = 'Your Shopping Cart';
+$title = 'Your Shopping Cart: Stars For Stalin';
 include 'include/header.php'
 ?>
 
