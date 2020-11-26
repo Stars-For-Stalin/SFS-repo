@@ -9,9 +9,9 @@
 
 <h3>Please Login to System</h3>
 
-<?php 
-    session_start();  
-    if ($_SESSION['loginMessage']  != null)	
+<?php
+    session_start();
+    if ($_SESSION['loginMessage'] != null)	
         echo ("<p>" . $_SESSION['loginMessage'] . "</p>");
 ?>
 
