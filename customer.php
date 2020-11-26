@@ -1,38 +1,23 @@
-<?php 
-    include 'auth.php';	
-	$user = $_SESSION['authenticatedUser'];
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Customer Page</title>
-</head>
-<body>
-
-<?php     
-    include 'include/header.php';
-    include 'include/db_credentials.php';
-?>
-
 <?php
-// TODO: Print Customer information
-include('auth.php');
-    $con = try_connect();
+include 'auth.php';
+$user = $_SESSION['authenticatedUser'];
+
+$title = 'Customer Page';
+include 'include/header.php';
+?>
+
+<body>
+    <div class='container'>
+        <?php
+        // TODO: Print Customer information
+        $con = try_connect();
         if ($con !== false) {
             $sql = "SELECT * FROM customer WHERE userid = ?;";
-			$preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
+            $preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
             $result = sqlsrv_execute($preparedStatement);
             $row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC);
-            echo "<head><style>table, th, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-                } th, td {
-                padding: 5px;
-                text-align: left;
-                }</style></head>
-                <body>
-                <table border=\"1\">
+            echo "
+                <table class='table table-bordered'>
                 <tr>
                 <th>Id</th>
                 <td>" . $row['customerId'] . "</td>
@@ -78,13 +63,13 @@ include('auth.php');
                 <td>" . $user . "</td>
                 </tr>
                 <tr>
-                </table>
-                </body>
-                </html>";
+                </table>";
 
-// Make sure to close connection
-disconnect($con);
-}
-?>
+            // Make sure to close connection
+            disconnect($con);
+        }
+        ?>
+    </div>
 </body>
+
 </html>
