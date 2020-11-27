@@ -28,10 +28,16 @@
 
 								$link_addtocart = get_addcart_url($product);
 								$img = $product['productImageURL'];
-								$img = "<img src=\"$img\">";
+								// Checks if productImageURL exists.
+								if (!is_null($img)){
+									$img = "<img src=\"$img\">";
+								}
 								
-								// Most recent change.
-								$img1 = "<img src='displayImage.php?id=$id'/>";
+								$prodImage = $product['productImage'];
+								// Checks if productImage exists.
+								if (!is_null($prodImage)){
+									$img1 = "<img src='displayImage.php?id=$id'/>";
+								}
 							}
 						} else {
 							oops("SQL query failed.");
