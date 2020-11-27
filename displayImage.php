@@ -17,7 +17,7 @@ $pstmt = sqlsrv_query($con, $sql, array($id));
 if ($rst = sqlsrv_fetch_array( $pstmt, SQLSRV_FETCH_ASSOC)) 
 {
     echo $rst['productImage'];
-    //echo '<img src = "data:image/jpeg;base64,'.base64_encode( $rst['productImage'] ).'"/>';
+    
 }
                     
 sqlsrv_free_stmt($pstmt);
