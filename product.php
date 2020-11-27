@@ -5,16 +5,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-    <div class="container">
-        <?php
-            // Get product name to search for
-            $noproduct = true;
-            $link_continueshopping = $root . "listprod.php";
-            if(isset($_GET['id'])){
-                $id=$_GET['id'];
-                if(is_numeric($id)){
-                    $con = try_connect();
-                    if($con) {
+	<div class="container">
+		<?php
+			// Get product name to search for
+			$noproduct = true;
+			$link_continueshopping = $root . "listprod.php";
+			if(isset($_GET['id'])){
+				$id=$_GET['id'];
+				if(is_numeric($id)){
+					$con = try_connect();
+					if($con) {
 						$sql = "SELECT * from product where productId = ?";
 						$ps = sqlsrv_prepare($con, $sql, array(&$id));
 						if (sqlsrv_execute($ps)) {
@@ -45,17 +45,17 @@
 						disconnect($con);
 					} else {
 						oops("Couldn't connect to database.");
-                    }
-                }
-            }
-            if ($noproduct) {
-                echo("<h1>Product Not Found!</h1>");
+					}
+				}
+			}
+			if ($noproduct) {
+				echo("<h1>Product Not Found!</h1>");
 				echo("<h2>Redirecting to product listing in 3 seconds.</h2>");
-                addjs("setTimeout(function(){window.location.href=\"$link_continueshopping\";},3000);");
-            } else {
-                ?>
-                <h1><?php echo($name); ?></h1>
-                <?php echo($img); ?> 
+				addjs("setTimeout(function(){window.location.href=\"$link_continueshopping\";},3000);");
+			} else {
+				?>
+				<h1><?php echo($name); ?></h1>
+				<?php echo($img); ?> 
 				<?php echo($img1); ?>
 				<?php
 				// TODO: Retrieve any image stored directly in database. Note: Call displayImage.php with product id as parameter.
@@ -81,7 +81,7 @@
 				echo("<br/>");
 				echo(wrap(make_link($link_continueshopping,"Continue Shopping"),"h5"));
 			}
-        ?>
-    </div>
+		?>
+	</div>
 </body>
 </html>
