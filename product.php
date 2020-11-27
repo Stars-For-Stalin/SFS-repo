@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 	$title = "Stars for Stalin";
 	include 'include/header.php';
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <body>
     <div class="container">
         <?php
