@@ -29,12 +29,9 @@
 								$link_addtocart = get_addcart_url($product);
 								$img = $product['productImageURL'];
 								$img = "<img src=\"$img\">";
-
-								// This was what I had done when earlier on when I saw the TA but this doesn't pass any id.
-								//echo "<img src=\"displayImage.php?id=\"".productId.">";
-
-								// Most recent change
-								echo '<img src="data:image/jpeg;base64,' . base64_encode(file_get_contents("displayImage.php?id=$id")) .'"/>';
+								
+								// Most recent change.
+								$img1 = "<img src='displayImage.php?id=$id'/>";
 							}
 						} else {
 							oops("SQL query failed.");
@@ -52,7 +49,8 @@
             } else {
                 ?>
                 <h1><?php echo($name); ?></h1>
-                <?php echo($img); ?>
+                <?php echo($img); ?> 
+				<?php echo($img1); ?>
 				<?php
 				// TODO: Retrieve any image stored directly in database. Note: Call displayImage.php with product id as parameter.
 				echo(make_table(
