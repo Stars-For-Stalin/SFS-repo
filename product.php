@@ -7,7 +7,6 @@
 <body>
 	<div class="container">
 		<?php
-			// Get product name to search for
 			$noproduct = true;
 			$link_continueshopping = $root . "listprod.php";
 			if(isset($_GET['id'])){
@@ -27,16 +26,16 @@
 								addjs("document.title=\"$title\";");
 
 								$link_addtocart = get_addcart_url($product);
-								$img = $product['productImageURL'];
-								// Checks if productImageURL exists.
-								if (!is_null($img)){
-									$img = "<img src=\"$img\">";
+								$img1 = $product['productImageURL'];
+								// Avoiding an empty img tag
+								if (!is_null($img1)){
+									$img1 = "<img src='$img1'>";
 								}
 								
 								$prodImage = $product['productImage'];
 								// Checks if productImage exists.
 								if (!is_null($prodImage)){
-									$img1 = "<img src='displayImage.php?id=$id'/>";
+									$img2 = "<img src='displayImage.php?id=$id'/>";
 								}
 							}
 						} else {
@@ -55,10 +54,9 @@
 			} else {
 				?>
 				<h1><?php echo($name); ?></h1>
-				<?php echo($img); ?> 
-				<?php echo($img1); ?>
+				<?php echo($img1); //might be empty ?>
+				<?php echo($img2); //might be empty ?>
 				<?php
-				// TODO: Retrieve any image stored directly in database. Note: Call displayImage.php with product id as parameter.
 				echo(make_table(
 					array(
 						make_row(
