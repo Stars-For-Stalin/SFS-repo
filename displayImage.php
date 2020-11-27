@@ -9,7 +9,7 @@ if ($id == null)
 include 'include/db_credentials.php';
 
 // TODO: Modify SQL to retrieve productImage given productId
-$sql = "";
+$sql = "SELECT productImage FROM product WHERE productid = ?";
 
 $con = sqlsrv_connect($server, $connectionInfo);
 $pstmt = sqlsrv_query($con, $sql, array($id));
@@ -17,6 +17,7 @@ $pstmt = sqlsrv_query($con, $sql, array($id));
 if ($rst = sqlsrv_fetch_array( $pstmt, SQLSRV_FETCH_ASSOC)) 
 {
     echo $rst['productImage'];
+    //echo '<img src="data:image/jpeg;base64,'.base64_encode( $rst['productImage'] ).'"/>';
 }
                     
 sqlsrv_free_stmt($pstmt);
