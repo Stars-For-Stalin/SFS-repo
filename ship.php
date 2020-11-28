@@ -68,7 +68,7 @@
 				// TODO: Make sure to commit or rollback active transaction
 				if (!$insufficient_qty) {
 					sqlsrv_commit( $con );
-					echo ('Success');
+					echo ('<h2>Shipment successfully processed.</h2>');
 				} else {
 					sqlsrv_rollback( $con );
 					echo ("<h2>Shipment not done. Insufficient inventory for product id: $prodId</h2>");
