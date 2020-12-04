@@ -15,7 +15,6 @@
 	<h2 class="text-center"><a href="listorder.php">Order History</a></h2>
 	<h2 class="text-center"><a href="listprod.php">Shop for Stars</a></h2>
 <?php
-	// TODO: Display user name that is logged in (or nothing if not logged in)	
 ?>
 </body>
 <?php include 'include/footer.php'; ?>
