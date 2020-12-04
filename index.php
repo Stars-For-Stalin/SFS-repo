@@ -11,6 +11,8 @@
 <body>
 <h1 align="center">Welcome to Ray's Grocery</h1>
 
+<h2 align="center"><a href="useraccount.php">Create an Account</a></h2>
+
 <h2 align="center"><a href="login.php">Login</a></h2>
 
 <h2 align="center"><a href="listprod.php">Begin Shopping</a></h2>
