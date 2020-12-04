@@ -56,13 +56,34 @@ function wrap($data, $tag, $attributes = null) {
 	$output .= '>' . $data . '</' . $tag . '>';
 	return $output;
 }
-function make_link($url, $text, $aclass = null) {
-	return '<a href="' . $url . '" class="' . $aclass . '">' . $text . '</a>';
+function make_link($url, $text, $attributes = null) {
+	$link="<a href='$url'";
+	if (!empty($attributes)) {
+		foreach ($attributes as $key => $value) {
+			$link .= " $key='$value'";
+		}
+	}
+	$link .= ">$text</a>";
+	return $link;
 }
 function print_product($prodtuple) {
 	$cells = array();
+	if($prodtuple['productImageURL']) {
+		$imgURL = $prodtuple['productImageURL'];
+	} elseif ($prodtuple['productImage']){
+		$id = $prodtuple['productId'];
+		$imgURL = "displayImage.php?id=$id";
+	}
+	if (isset($imgURL)) {
+		$prodlink = make_link(
+			get_product_url($prodtuple['productId']),
+			$prodtuple['productName'], array("rel" => "popover","data-img"=>"$imgURL")
+		);
+	} else {
+		$prodlink = make_link(get_product_url($prodtuple['productId']), $prodtuple['productName']);
+	}
 	array_push($cells, make_cell(make_link(get_addcart_url($prodtuple), "Add To Cart")));
-	array_push($cells, make_cell(make_link(get_product_url($prodtuple['productId']), $prodtuple['productName'])));
+	array_push($cells, make_cell($prodlink));
 	array_push($cells, make_cell('$' . $prodtuple['productPrice']));
 	echo (make_row($cells));
 }

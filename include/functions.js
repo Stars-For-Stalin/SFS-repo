@@ -17,3 +17,13 @@ function removeParam(key, sourceURL) {
 	console.log(rtn);
 	return rtn;
 }
+$(document).ready(function() {
+	$('a[rel=popover]').popover({
+		html: true,
+		trigger: 'hover',
+		placement: 'right',
+		content: function () {
+			return '<img class="preview-product-image" src="' + $(this).data('img') + '" />';
+		}
+	});
+});
