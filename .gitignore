@@ -1,4 +1,5 @@
 .idea
 .settings
 .vscode
-adminer.php
+.buildpath
+.project
