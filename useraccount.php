@@ -10,11 +10,11 @@ include 'include/header.php';
 
 	<?php
 
-		$submit= $_POST['submit'];
-		$firstName= $_POST['firstname_entered'];
-		$lastName= $_POST['lastname_entered'];
-		$username= $_POST['username_entered'];
-		$password= $_POST['password_entered'];
+		$submit = $_POST['submit'];
+		$firstName = $_POST['firstname_entered'];
+		$lastName = $_POST['lastname_entered'];
+		$username = $_POST['username_entered'];
+		$password = $_POST['password_entered'];
 
 		$check = 0;
 		$count = 0;
@@ -46,7 +46,7 @@ include 'include/header.php';
 			}
 		}
 
-		sqlsrv_close($con);
+		disconnect($con);
 
 		if ($check == 1) {
 			echo "You have been successfully registered<br>";
