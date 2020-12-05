@@ -23,7 +23,7 @@
 		?>
 	</title>
 </head>
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
 	<?php
 		echo (make_link($root . "index.php", "Stars For Stalin!", array("class" => "navbar-brand")));
 
