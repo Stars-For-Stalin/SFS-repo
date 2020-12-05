@@ -18,7 +18,7 @@
 				if (isset($_SESSION['productList'])) {
 					$productList = $_SESSION['productList'];
 					echo ("<h1>Your Shopping Cart</h1>");
-					echo (make_tableheader(array('Product Id', 'Product Name', 'Quantity', 'Price', 'Subtotal','')));
+					echo (make_tableheader(array('Product Id', 'Product Name', 'Quantity', 'Price', 'Subtotal')));
 
 					$total = 0;
 					foreach ($productList as $id => $prod) {
@@ -34,10 +34,10 @@
 						array_push($cells,make_cell($name));
 						$quantity_row =
 							"<div class='row pl-3'>" .
-                                "<input class='form-control col-4' type='number' min='0' value='$quantity' name='prod_$id'>".
-							    "<div class='col-8 text-right'>$remove_btn</div>".
+                                "<input class='col-4 form-control' type='number' min='0' value='$quantity' name='prod_$id'>".
+							    "<div class='col-8'>$remove_btn</div>".
 							"</div>";
-						$attr = array("style" => "width:25%");
+						$attr = array("style" => "width:20%");
 						array_push($cells,make_cell($quantity_row,"td",$attr));
 						$attr = array("class" => "text-right");
 						array_push($cells,make_cell("$$price","td",$attr));
