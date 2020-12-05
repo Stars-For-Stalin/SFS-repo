@@ -27,23 +27,24 @@
 					    $price = $prod['price'];
 					    $subtotal = $quantity * $price;
 					    $subtotal_str = number_format($subtotal,2);
-					    $remove_btn = "<input class='form-control btn btn-md btn-danger' id='reset-btn' type='reset' value='remove'>";
+					    $remove_btn = "<input class='form-control btn btn-md btn-danger' id='remove-$id' type='submit' value='remove'>";
 
 					    $cells = array();
 						array_push($cells,make_cell($id));
 						array_push($cells,make_cell($name));
 						$quantity_row =
 							"<div class='row pl-3'>" .
-                                "<input class='col-4 form-control' type='number' min='0' value='$quantity' name='prod_$id'>".
+                                "<input class='col-4 form-control' id='quant-$id' type='number' min='0' value='$quantity' name='prod_$id'>".
 							    "<div class='col-8'>$remove_btn</div>".
 							"</div>";
-						$attr = array("style" => "width:20%");
+						$attr = array("style" => "width:21%");
 						array_push($cells,make_cell($quantity_row,"td",$attr));
 						$attr = array("class" => "text-right");
 						array_push($cells,make_cell("$$price","td",$attr));
 						array_push($cells,make_cell("$$subtotal_str","td",$attr));
 
 						echo(make_row($cells));
+						addjs("document.getElementById('remove-$id').addEventListener('click', function() {document.getElementById('quant-$id').setAttribute('value',0);});");
 						$total = $total + $subtotal;
 					}
 					$total = number_format($total,2);
@@ -53,12 +54,6 @@
 					echo ("<H1>Your shopping cart is empty!</H1>");
 				}
 			?>
-
-            <script type="text/javascript">
-                //document.getElementById('reset-btn').addEventListener("click", function() {
-                //    window.location.href = removeParam("categoryName", removeParam("productName", window.location.href));
-                //});
-            </script>
 			<div class="row">
 				<div class="col-lg-8 col-sm-6">
 					<a class="btn btn-secondary btn-md" href="listprod.php">Continue Shopping</a>
