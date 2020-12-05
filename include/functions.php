@@ -142,7 +142,7 @@ function get_product_url($product) {
 	return $url;
 }
 function addjs($code) {
-	echo ("<script type=\"text/javascript\">$code</script>");
+	echo ("<script type='text/javascript'> $code </script>");
 }
 /**
  * A function that generates formatted HTML text for table cells.
