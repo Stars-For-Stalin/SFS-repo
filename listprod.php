@@ -40,8 +40,7 @@
 			</div>
 			<div class='col-2'>
 				<input class='form-control btn btn-primary' type="submit" value="Submit">
-				<input class='form-control btn btn-secondary' id="reset-btn" type="reset" value="Reset">
-
+				<input class='form-control btn btn-secondary' id='reset-btn' type='reset' value='Reset'>
 			</div>
 		</form>
 	</div>
