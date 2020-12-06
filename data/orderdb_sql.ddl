@@ -218,6 +218,8 @@ INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (31
 INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (32, 1, 1, 20);
 INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (33, 1, 1, 20);
 
+INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Admin', '', 'admin@sfs.ru', '', '', '', '', '', '', 'admin' , 'admin');
+INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Arnold', 'Anderson', 'a.anderson@gmail.com', '204-111-2222', '103 AnyWhere Street', 'Winnipeg', 'MB', 'R3X 45T', 'Canada', 'arnold' , 'test');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Sofia', 'Popov', 's.popov@gmail.com', '204-111-2222', '103 Mercury Street', 'Yekaterinburg', 'GU', '920341', 'Russia', 'sofia' , '1234');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Denis', 'Smirnoff', 'd.smirnoff@gmail.ca', '572-342-8911', '222 Venus Avenue', 'Kazan', 'YU', '222222', 'Russia', 'denis' , '5678');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Nikita', 'Petrov', 'n.petrov@gmail.com', '333-444-5555', '333 Mars Crescent', 'Chelyabinsk', 'SH', '333333', 'Russia', 'nikita' , '1357');
