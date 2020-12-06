@@ -42,11 +42,11 @@
 							if (isset($_GET['redirect']))
 								echo ('<input type="hidden" name="redirect" value="' . $_GET['redirect'] . '">');
 							?>
-						</form>
-                        <div class="form-group">
-                            <button onclick="window.location.href='register.php'" class="btn btn-primary btn-block"> Register </button>
-                        </div>
-                        <a href="forgot-password.php?">forgot password</a>
+                            <div class="form-group">
+                                <a href='register.php' class="btn btn-primary btn-block"> Register </a>
+                            </div>
+                            <button type="submit" class="btn btn-link" onclick="this.form.action='forgot-password.php';">forgot password</button>
+                        </form>
 					</article>
 				</div>
 			</aside>
