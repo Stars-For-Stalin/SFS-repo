@@ -1,14 +1,12 @@
 <?php
-include('auth.php');
-$title = 'Administrator Page';
-include('include/header.php');
+	include('auth.php');
+	$title = 'Administrator Page: Stars For Stalin';
+	include('include/header.php');
 ?>
 
 <body>
-	<div class='container'>
-		
-
-		<?php
+<div class='container'>
+	<?php
 		$con = try_connect();
 
 		if ($con == false) {
@@ -29,8 +27,8 @@ include('include/header.php');
 		echo (make_table($tbrows));
 
 		disconnect($con);
-		?>
-	</div>
+	?>
+</div>
 </body>
 
 </html>

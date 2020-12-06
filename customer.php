@@ -2,7 +2,7 @@
 	include 'auth.php';
 	$user = $_SESSION['authenticatedUser'];
 
-	$title = 'Customer Page';
+	$title = 'Your Account: Stars For Stalin';
 	include 'include/header.php';
 ?>
 

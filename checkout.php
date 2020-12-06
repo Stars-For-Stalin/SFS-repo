@@ -1,6 +1,6 @@
 <?php
 session_start();
-$title = 'Grocery CheckOut Line';
+$title = 'Grocery CheckOut Line: Stars For Stalin';
 
 if (isset($_SESSION['authenticatedUser']))
 	header('Location: order.php');

@@ -1,6 +1,6 @@
 <?php
 
-	$title = 'Create User Account Page';
+	$title = 'Register Account: Stars For Stalin';
 	include 'include/header.php';
 
 ?>

@@ -2,7 +2,7 @@
 	include 'auth.php';
 	$user = $_SESSION['authenticatedUser'];
 
-	$title = "Stars For Stalin - All Orders";
+	$title = "Your Orders: Stars For Stalin";
 	include 'include/header.php';
 ?>
 
