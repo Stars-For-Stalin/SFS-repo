@@ -1,0 +1,42 @@
+img.preview-product-image {
+	width: 100%;
+	height: 100%;
+	max-width: 200px;
+	max-height: 200px;
+}
+
+nav.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	margin-bottom: 0px!important;
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+table.align-fullcenter {
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.align-rightside {
+	margin-left: auto!important;
+	margin-right: 0px!important;
+}
+
+.align-leftside {
+	margin-right: auto!important;
+	margin-left: 0px!important;
+}
+
+.align-vcenter {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+td.reduced-padding {
+	padding: 6px;
+}

@@ -36,7 +36,7 @@ include 'include/header.php';
 					while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
 						echo (make_row(
 							array(
-								make_cell($row['orderId'], 'th', array("scope" => "row")),
+								make_cell($row['orderId'], array("scope" => "row"), 'th'),
 								make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
 								make_cell($row['customerId']),
 								make_cell($row['firstName'] . " " . $row['lastName']),
@@ -67,7 +67,7 @@ include 'include/header.php';
 								array(
 									make_cell($row2['productId']),
 									make_cell($row2['quantity']),
-									make_cell("$" . number_format($row2['price'], 2))
+									make_cell("$" . format_price($row2['price']))
 								)
 							));
 
