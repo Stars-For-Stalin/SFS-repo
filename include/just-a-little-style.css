@@ -15,10 +15,28 @@ nav.footer {
 	padding-right: 15px;
 }
 
-table.align-rightside {
-	width: auto;
+table.align-fullcenter {
 	margin-right: auto;
 	margin-left: auto;
 	margin-top: auto;
 	margin-bottom: auto;
+}
+
+.align-rightside {
+	margin-left: auto!important;
+	margin-right: 0px!important;
+}
+
+.align-leftside {
+	margin-right: auto!important;
+	margin-left: 0px!important;
+}
+
+.align-vcenter {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+td.reduced-padding {
+	padding: 6px;
 }

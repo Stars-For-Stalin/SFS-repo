@@ -36,7 +36,7 @@ include 'include/header.php';
 					while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
 						echo (make_row(
 							array(
-								make_cell($row['orderId'], 'th', array("scope" => "row")),
+								make_cell($row['orderId'], array("scope" => "row"), 'th'),
 								make_cell(date_format($row['orderDate'], 'Y-m-d H:i:s')),
 								make_cell($row['customerId']),
 								make_cell($row['firstName'] . " " . $row['lastName']),

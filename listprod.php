@@ -67,10 +67,11 @@
 					while ($product = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)) {
 						if (!$found_products) {
 							$found_products = true;
-							echo (make_tableheader(array(
-								"",
-								"Product Name",
-								"Price"
+							$attr = array("scope"=>"col");
+							echo("<table class='table table-bordered align-fullcenter' style='width:50%'>");
+							echo(make_row(array(
+								make_cell("Product Name", $attr, 'th'),
+								make_cell("Price", $attr, 'th')
 							)));
 						}
 						debug_to_console("looping");

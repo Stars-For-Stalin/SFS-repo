@@ -39,10 +39,10 @@
 							    "<div class='col-8'>$remove_btn</div>".
 							"</div>";
 						$attr = array("style" => "width:21%");
-						array_push($cells,make_cell($quantity_row,"td",$attr));
+						array_push($cells,make_cell($quantity_row, $attr, "td"));
 						$attr = array("class" => "text-right");
-						array_push($cells,make_cell("$$price_str","td",$attr));
-						array_push($cells,make_cell("$$subtotal_str","td",$attr));
+						array_push($cells,make_cell("$$price_str", $attr, "td"));
+						array_push($cells,make_cell("$$subtotal_str", $attr, "td"));
 
 						echo(make_row($cells));
 						addjs("document.getElementById('remove-$id').addEventListener('click', function() {document.getElementById('quant-$id').setAttribute('value',0);});");

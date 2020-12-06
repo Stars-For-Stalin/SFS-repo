@@ -82,10 +82,25 @@ function print_product($prodtuple) {
 	} else {
 		$prodlink = make_link(get_product_url($prodtuple['productId']), $prodtuple['productName']);
 	}
-	array_push($cells, make_cell(make_link(get_addcart_url($prodtuple), "Add To Cart")));
-	array_push($cells, make_cell($prodlink));
-	array_push($cells, make_cell('$' . format_price($prodtuple['productPrice'])));
+	$prod_links = "<div class='row px-3 '>";
+	$prod_links .= "<div class='align-vcenter'>";
+	$prod_links .= $prodlink;
+	$prod_links .= "</div><div class='align-rightside'>";
+	$prod_links .= get_addcart_btn($prodtuple, true);
+	$prod_links .= "</div></div>";
+	$attr = array("class"=>"reduced-padding");
+	array_push($cells, make_cell($prod_links, $attr));
+	array_push($cells, make_cell('$' . format_price($prodtuple['productPrice']),array("class"=>"text-right")));
 	echo (make_row($cells));
+}
+function get_addcart_btn($prodtuple, $leave_page = false){
+	$url=get_addcart_url($prodtuple);
+	if ($leave_page){
+		$html = "<button class='btn btn-md btn-primary' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
+	} else {
+		$html = "<button class='btn btn-md btn-primary' onclick='ajaxRequest($url,\"POST\")'>Add To Cart</button>";
+	}
+	return $html;
 }
 function format_price($price) {
 	return number_format($price,2,'.',',');
@@ -100,21 +115,21 @@ function print_order_summary($orderData, $orderList) {
 	$make_row_pair=function($title,$value,$align=null){
 		$attr = array("scope"=>"col");
 		$cells=array();
-		array_push($cells,make_cell($title,'th',$attr));
-		array_push($cells,make_cell($value,'td',$align));
+		array_push($cells,make_cell($title, $attr, 'th'));
+		array_push($cells,make_cell($value, $align));
 		return make_row($cells);
 	};
 	echo("<div class='row'>");
 	$rows = array(make_row(array(
-		make_cell("Product Name",'th',$attr1),
-		make_cell("Quantity",'th',$attr1),
-		make_cell("Price",'th',$attr1)
+		make_cell("Product Name", $attr1, 'th'),
+		make_cell("Quantity", $attr1, 'th'),
+		make_cell("Price", $attr1, 'th')
 	)));
 	foreach ($orderList as $id => $prod) {
 		$cells = array();
 		array_push($cells, make_cell($prod['name']));
-		array_push($cells, make_cell($prod['quantity'],'td',$ralign));
-		array_push($cells, make_cell("$".format_price($prod['price']),'td',$ralign));
+		array_push($cells, make_cell($prod['quantity'], $ralign));
+		array_push($cells, make_cell("$" . format_price($prod['price']), $ralign));
 		array_push($rows, make_row($cells));
 	}
 	echo(make_table($rows,$attr_t1));
@@ -149,20 +164,21 @@ function get_product_url($product) {
 function addjs($code) {
 	echo ("<script type='text/javascript'> $code </script>");
 }
-/**
- * A function that generates formatted HTML text for table cells.
- * 
- * @param string $data String for the datacell, can be plain text or formatted html text.
- * @param string $type Optional. Type of the datacell, default to 'td', can be 'th' for headers.
- * @param array	 $attributes {
- *		Optional. An array for additional attributes.
- *		When using this parameter, pass in an array with key=>value pair.
- *		For example, if you want a cell with colspan of 3, and align to right, you pass in:
- *			array ('colspan'=>3, 'align'=>'right')
- * }
- * @return string Return the constructed string for the cell.
- */
-function make_cell($data, $type = "td", $attributes = null) {
+
+	/**
+	 * A function that generates formatted HTML text for table cells.
+	 *
+	 * @param string $data String for the datacell, can be plain text or formatted html text.
+	 * @param array $attributes {
+	 *        Optional. An array for additional attributes.
+	 *        When using this parameter, pass in an array with key=>value pair.
+	 *        For example, if you want a cell with colspan of 3, and align to right, you pass in:
+	 *            array ('colspan'=>3, 'align'=>'right')
+	 * }
+	 * @param string $type Optional. Type of the datacell, default to 'td', can be 'th' for headers.
+	 * @return string Return the constructed string for the cell.
+	 */
+function make_cell($data, $attributes = null, $type = "td") {
 	$output = '<' . $type;
 	if (!empty($attributes)) {
 		foreach ($attributes as $key => $value) {
@@ -177,12 +193,12 @@ function make_cell($data, $type = "td", $attributes = null) {
 
 /**
  * A function that generates formatted HTML text for table rows.
- * 
+ *
  * @param array $cells {
  *		An array of table cells, as formatted html strings.
  *		Ex. array('<td>something</td>', '<td>something else</td>')
  *		Or: array(make_cell('something'), make_cell('something else'))
- * } 
+ * }
  * @param array	 $attributes {
  *		Optional. An array for additional attributes.
  *		When using this parameter, pass in an array with key=>value pair.
@@ -228,7 +244,7 @@ function make_tableheader($cols) {
 	$cells = array();
 	foreach ($cols as $cheading) {
 		debug_to_console("processing column headings.. on: " . $cheading);
-		array_push($cells, make_cell($cheading, 'th', $header_attr));
+		array_push($cells, make_cell($cheading, $header_attr, 'th'));
 	}
 	$str  = '<table class="table table-bordered"><thead>';
 	$str .= make_row($cells);

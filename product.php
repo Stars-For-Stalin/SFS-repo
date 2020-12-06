@@ -63,19 +63,19 @@
 					array(
 						make_row(
 							array(
-								make_cell("<h5>Id</h5>",'td',$attr2),
-								make_cell("$id",'td',$attr3)
+								make_cell("<h5>Id</h5>", $attr2),
+								make_cell("$id", $attr3)
 							)
 						),
 						make_row(
 							array(
-								make_cell("<h5>Price</h5>",'td',$attr2),
-								make_cell("\$$price",'td',$attr3)
+								make_cell("<h5>Price</h5>", $attr2),
+								make_cell("\$$price", $attr3)
 							)
 						),
 						make_row(
 							array(
-								make_cell($prodDescription,'td',array("colspan"=>"4"))
+								make_cell($prodDescription, array("colspan" => "4"))
 							)
 						)
 					),

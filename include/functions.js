@@ -17,6 +17,13 @@ function removeParam(key, sourceURL) {
 	console.log(rtn);
 	return rtn;
 }
+function ajaxRequest(url,type){
+	var xhttp = new XMLHttpRequest();
+	xhttp.open(type, url, true);
+	//xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
 $(document).ready(function() {
 	$('a[rel=popover]').popover({
 		html: true,
