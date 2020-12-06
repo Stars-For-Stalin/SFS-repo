@@ -84,47 +84,52 @@ function print_product($prodtuple) {
 	}
 	array_push($cells, make_cell(make_link(get_addcart_url($prodtuple), "Add To Cart")));
 	array_push($cells, make_cell($prodlink));
-	array_push($cells, make_cell('$' . $prodtuple['productPrice']));
+	array_push($cells, make_cell('$' . format_price($prodtuple['productPrice'])));
 	echo (make_row($cells));
+}
+function format_price($price) {
+	return number_format($price,2,'.',',');
 }
 function print_order_summary($orderData, $orderList) {
 	echo ("<h1>Your Order Summary</h1>");
-	echo (make_tableheader(array(
-		"Order Id",
-		"Order Date",
-		"Total Amount",
-		"Address",
-		"City",
-		"State",
-		"Postal Code",
-		"Country",
-		"Customer Id"
-	)));
-	$cells = array();
-	array_push($cells, make_cell($orderData['orderId']));
-	array_push($cells, make_cell(date_format($orderData['orderDate'], 'Y-m-d')));
-	array_push($cells, make_cell("$" . $orderData['totalAmount']));
-	array_push($cells, make_cell($orderData['shiptoAddress']));
-	array_push($cells, make_cell($orderData['shiptoCity']));
-	array_push($cells, make_cell($orderData['shiptoState']));
-	array_push($cells, make_cell($orderData['shiptoPostalCode']));
-	array_push($cells, make_cell($orderData['shiptoCountry']));
-	array_push($cells, make_cell($orderData['customerId']));
-	echo (make_row($cells));
-	echo ("</table>");
-	echo (make_tableheader(array(
-		"Product Name",
-		"Quantity",
-		"Price"
+	$attr_t1 = array("style"=>"width:40%","class"=>"table table-bordered");
+	$attr_t2 = array("style"=>"width:35%","class"=>"table table-bordered align-rightside");
+	$attr1 = array("scope"=>"col");
+	$ralign = array("class"=>"text-right");
+	$order_align = array("class"=>"text-left");
+	$make_row_pair=function($title,$value,$align=null){
+		$attr = array("scope"=>"col");
+		$cells=array();
+		array_push($cells,make_cell($title,'th',$attr));
+		array_push($cells,make_cell($value,'td',$align));
+		return make_row($cells);
+	};
+	echo("<div class='row'>");
+	$rows = array(make_row(array(
+		make_cell("Product Name",'th',$attr1),
+		make_cell("Quantity",'th',$attr1),
+		make_cell("Price",'th',$attr1)
 	)));
 	foreach ($orderList as $id => $prod) {
 		$cells = array();
 		array_push($cells, make_cell($prod['name']));
-		array_push($cells, make_cell($prod['quantity']));
-		array_push($cells, make_cell(number_format($prod['price'], 2)));
-		echo (make_row($cells));
+		array_push($cells, make_cell($prod['quantity'],'td',$ralign));
+		array_push($cells, make_cell("$".format_price($prod['price']),'td',$ralign));
+		array_push($rows, make_row($cells));
 	}
-	echo ("</table>");
+	echo(make_table($rows,$attr_t1));
+	$rows = array();
+	array_push($rows, $make_row_pair("Order Id",$orderData['orderId'],$order_align));
+	array_push($rows, $make_row_pair("Order Date",date_format($orderData['orderDate'], 'Y-m-d'),$order_align));
+	array_push($rows, $make_row_pair("Customer Id",$orderData['customerId'],$order_align));
+	array_push($rows, $make_row_pair("Total Amount","$" . format_price($orderData['totalAmount']),$order_align));
+	array_push($rows, $make_row_pair("Address",$orderData['shiptoAddress'],$order_align));
+	array_push($rows, $make_row_pair("City",$orderData['shiptoCity'],$order_align));
+	array_push($rows, $make_row_pair("State",$orderData['shiptoState'],$order_align));
+	array_push($rows, $make_row_pair("Postal Code",$orderData['shiptoPostalCode'],$order_align));
+	array_push($rows, $make_row_pair("Country",$orderData['shiptoCountry'],$order_align));
+	echo(make_table($rows,$attr_t2));
+	echo("</div>");
 }
 function get_addcart_url($prodtuple) {
 	//id=<>name=<>&price=<>

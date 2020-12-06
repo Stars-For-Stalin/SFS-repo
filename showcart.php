@@ -25,8 +25,9 @@
 					    $name = $prod['name'];
 					    $quantity = $prod['quantity'];
 					    $price = $prod['price'];
+						$price_str = format_price($price);
 					    $subtotal = $quantity * $price;
-					    $subtotal_str = number_format($subtotal,2);
+					    $subtotal_str = format_price($subtotal,2);
 					    $remove_btn = "<input class='form-control btn btn-md btn-danger' id='remove-$id' type='submit' value='remove'>";
 
 					    $cells = array();
@@ -40,14 +41,14 @@
 						$attr = array("style" => "width:21%");
 						array_push($cells,make_cell($quantity_row,"td",$attr));
 						$attr = array("class" => "text-right");
-						array_push($cells,make_cell("$$price","td",$attr));
+						array_push($cells,make_cell("$$price_str","td",$attr));
 						array_push($cells,make_cell("$$subtotal_str","td",$attr));
 
 						echo(make_row($cells));
 						addjs("document.getElementById('remove-$id').addEventListener('click', function() {document.getElementById('quant-$id').setAttribute('value',0);});");
 						$total = $total + $subtotal;
 					}
-					$total = number_format($total,2);
+					$total = format_price($total);
 					echo ("<tr><td colspan='4' class='text-right'><b>Order Total</b></td><td class='text-right'>$$total</td></tr>");
 					echo ("</table>");
 				} else {

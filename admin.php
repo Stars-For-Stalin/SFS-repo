@@ -20,7 +20,7 @@ include('include/header.php');
 		$tbrows = array(make_tableheader(array('Order Date', 'Total Order Amount')));
 		if ($results != false) {
 			while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
-				$tbrow = make_row(array(make_cell(date_format($row['orderDate'], 'Y-m-d')), make_cell("$" . number_format($row['totalAmount'], 2))));
+				$tbrow = make_row(array(make_cell(date_format($row['orderDate'], 'Y-m-d')), make_cell("$" . format_price($row['totalAmount']))));
 				array_push($tbrows, $tbrow);
 			}
 		}

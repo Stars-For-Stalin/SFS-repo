@@ -21,9 +21,9 @@
 							if (!is_null($product)) {
 								$noproduct = false;
 								$name = $product['productName'];
-								$price = $product['productPrice'];
+								$price = format_price($product['productPrice']);
 								$title = $name . ": " . $title;
-								addjs("document.title=\"$title\";");
+								addjs("document.title='$title';");
 
 								$link_addtocart = get_addcart_url($product);
 								$img1 = $product['productImageURL'];
@@ -37,6 +37,7 @@
 								if (!is_null($prodImage)){
 									$img2 = "<img src='displayImage.php?id=$id'/>";
 								}
+								$prodDescription = $product['productDesc'];
 							}
 						} else {
 							oops("SQL query failed.");
@@ -52,28 +53,30 @@
 				echo("<h2>Redirecting to product listing in 3 seconds.</h2>");
 				addjs("setTimeout(function(){window.location.href=\"$link_continueshopping\";},3000);");
 			} else {
-				?>
-				<h1><?php echo($name); ?></h1>
-				<?php echo($img1); //might be empty ?>
-				<?php echo($img2); //might be empty ?>
-				<?php
+				echo("<h1>$name</h1>");
+				echo($img1); //might be empty
+				echo($img2); //might be empty
+                $attr1 = array("style"=>"width:33%","class"=>"table table-bordered");
+                $attr2 = array("class"=>"col-4");
+				$attr3 = array("class"=>"col-8");
 				echo(make_table(
 					array(
 						make_row(
 							array(
-								make_cell("<h5>Id</h5>"),
-								make_cell("$id")
+								make_cell("<h5>Id</h5>",'td',$attr2),
+								make_cell("$id",'td',$attr3)
 							)
 						),
 						make_row(
 							array(
-								make_cell("<h5>Price</h5>"),
-								make_cell("\$$price")
+								make_cell("<h5>Price</h5>",'td',$attr2),
+								make_cell("\$$price",'td',$attr3)
 							)
 						)
 					),
-					array("class"=>"table table-bordered")
+					$attr1
 				));
+				echo(make_table(array($prodDescription)));
 				echo("<br/>");
 				echo(wrap(make_link($link_addtocart,"Add to Cart"),"h5"));
 				echo("<br/>");

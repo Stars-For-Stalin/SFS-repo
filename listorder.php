@@ -67,7 +67,7 @@ include 'include/header.php';
 								array(
 									make_cell($row2['productId']),
 									make_cell($row2['quantity']),
-									make_cell("$" . number_format($row2['price'], 2))
+									make_cell("$" . format_price($row2['price']))
 								)
 							));
 
