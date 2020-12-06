@@ -28,9 +28,13 @@
 		echo (make_link($root . "index.php", "Stars For Stalin!", array("class" => "navbar-brand")));
 
 		echo ('<div class="navbar-nav mr-auto">');
-		echo (make_link($root . "listprod.php", "Stars", array("class" => "nav-item nav-link")));
-		echo (make_link($root . "listorder.php", "Your Orders", array("class" => "nav-item nav-link")));
-		echo (make_link($root . "showcart.php", "My Cart", array("class" => "nav-item nav-link")));
+		echo (make_link($root . "listprod.php", "Browse Stars", array("class" => "nav-item nav-link")));
+		if ($_SESSION['authenticatedUser'] == "admin"){
+			echo (make_link($root . "listorder.php", "All Orders", array("class" => "nav-item nav-link")));
+        } else {
+			echo (make_link($root . "listorder.php", "Your Orders", array("class" => "nav-item nav-link")));
+		}
+		echo (make_link($root . "showcart.php", "View Cart", array("class" => "nav-item nav-link")));
 		echo ('</div>');
 
 		echo ('<div class="navbar-nav">');

@@ -1,5 +1,6 @@
 <?php
-	include('auth.php');
+	$auth_admin_only=true; //value doesn't actually matter
+	include('include/auth.php');
 	$title = 'Administrator Page: Stars For Stalin';
 	include('include/header.php');
 ?>
@@ -10,6 +11,7 @@
 		$con = try_connect();
 
 		if ($con == false) {
+			debug_to_console(sqlsrv_errors());
 			die('Error connecting to DB');
 		}
 
@@ -18,7 +20,10 @@
 		$tbrows = array(make_tableheader(array('Order Date', 'Total Order Amount')));
 		if ($results != false) {
 			while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
-				$tbrow = make_row(array(make_cell(date_format($row['orderDate'], 'Y-m-d')), make_cell("$" . format_price($row['totalAmount']))));
+				$tbrow = make_row(array(
+					make_cell(date_format($row['orderDate'], 'Y-m-d')),
+					make_cell("$" . format_price($row['totalAmount']))
+				));
 				array_push($tbrows, $tbrow);
 			}
 		}
@@ -30,5 +35,4 @@
 	?>
 </div>
 </body>
-
-</html>
+<?php include("include/footer.php"); ?>

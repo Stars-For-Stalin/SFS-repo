@@ -1,5 +1,5 @@
 <?php
-	include 'auth.php';
+	include 'include/auth.php';
 	$user = $_SESSION['authenticatedUser'];
 
 	$title = 'Your Account: Stars For Stalin';

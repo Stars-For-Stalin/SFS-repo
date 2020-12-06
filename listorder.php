@@ -1,6 +1,5 @@
 <?php
-	include 'auth.php';
-	$user = $_SESSION['authenticatedUser'];
+	include 'include/auth.php';
 
 	$title = "Your Orders: Stars For Stalin";
 	include 'include/header.php';
@@ -30,7 +29,7 @@
 				if ($con != false) {
 
 
-					if ($user == 'admin') {
+					if ($auth_user == 'admin') {
 						$sql = "SELECT * FROM ordersummary JOIN customer ON ordersummary.customerId = customer.customerId;";
 						$preparedStatement = sqlsrv_query($con, $sql, array());
 					} else {
