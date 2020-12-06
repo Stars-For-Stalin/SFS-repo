@@ -72,11 +72,15 @@
 								make_cell("<h5>Price</h5>",'td',$attr2),
 								make_cell("\$$price",'td',$attr3)
 							)
+						),
+						make_row(
+							array(
+								make_cell($prodDescription,'td',array("colspan"=>"4"))
+							)
 						)
 					),
 					$attr1
 				));
-				echo(make_table(array($prodDescription)));
 				echo("<br/>");
 				echo(wrap(make_link($link_addtocart,"Add to Cart"),"h5"));
 				echo("<br/>");
