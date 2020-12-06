@@ -51,5 +51,4 @@ include 'include/header.php';
 		</div>
 	</div>
 </body>
-
-</html>
+<?php include 'include/footer.php'; ?>
