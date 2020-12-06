@@ -1,4 +1,7 @@
 <?php
+	include 'auth.php';
+	$user = $_SESSION['authenticatedUser'];
+
 	$title = "Stars For Stalin - All Orders";
 	include 'include/header.php';
 ?>
@@ -27,13 +30,17 @@
 				if ($con != false) {
 
 
+					if ($user == 'admin') {
+						$sql = "SELECT * FROM ordersummary JOIN customer ON ordersummary.customerId = customer.customerId;";
+						$preparedStatement = sqlsrv_query($con, $sql, array());
+					} else {
+						$sql = "SELECT * FROM ordersummary JOIN customer ON ordersummary.customerId = customer.customerId WHERE customer.userid = ?";
+						$preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
+						$results = sqlsrv_execute($preparedStatement);
+					}
 
-					/** Write query to retrieve all order headers **/
-					$sql = "SELECT * FROM ordersummary JOIN customer ON ordersummary.customerId = customer.customerId;";
-					$results = sqlsrv_query($con, $sql, array());
-
-					if ($results != false) {
-						while ($row = sqlsrv_fetch_array($results, SQLSRV_FETCH_ASSOC)) {
+					if ($results != false || $preparedStatement != false) {
+						while ($row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
 							echo (make_row(
 								array(
 									make_cell($row['orderId'], array("scope" => "row"), 'th'),
@@ -56,13 +63,13 @@
 
 							/* Query for individual order */
 							$sql2 = "SELECT * FROM orderproduct WHERE orderId = ?;";
-							$preparedStatement = sqlsrv_prepare($con, $sql2, array(&$row['orderId']));
-							$result2 = sqlsrv_execute($preparedStatement);
+							$preparedStatement1 = sqlsrv_prepare($con, $sql2, array(&$row['orderId']));
+							$result2 = sqlsrv_execute($preparedStatement1);
 
 							echo ('<tr><td colspan="3"></td><td colspan="2"><table class="table table-bordered"><thead><tr><th>Product Id</th> <th>Quantity</th> <th>Price</th></tr>');
 
 
-							while ($row2 = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC)) {
+							while ($row2 = sqlsrv_fetch_array($preparedStatement1, SQLSRV_FETCH_ASSOC)) {
 								echo (make_row(
 									array(
 										make_cell($row2['productId']),
