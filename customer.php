@@ -165,4 +165,3 @@
 				?>
     </div>
 </body>
-<?php include 'include/footer.php'; ?>
