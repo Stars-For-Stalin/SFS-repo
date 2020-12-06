@@ -86,7 +86,7 @@ function print_product($prodtuple) {
 	$prod_links .= "<div class='align-vcenter'>";
 	$prod_links .= $prodlink;
 	$prod_links .= "</div><div class='align-rightside'>";
-	$prod_links .= get_addcart_btn($prodtuple, true);
+	$prod_links .= get_addcart_btn($prodtuple);
 	$prod_links .= "</div></div>";
 	$attr = array("class"=>"reduced-padding");
 	array_push($cells, make_cell($prod_links, $attr));
@@ -98,7 +98,7 @@ function get_addcart_btn($prodtuple, $leave_page = false){
 	if ($leave_page){
 		$html = "<button class='btn btn-md btn-primary' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
 	} else {
-		$html = "<button class='btn btn-md btn-primary' onclick='ajaxRequest($url,\"POST\")'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary' onclick='ajaxRequest(\"$url\",\"POST\")'>Add To Cart</button>";
 	}
 	return $html;
 }
