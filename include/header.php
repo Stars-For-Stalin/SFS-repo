@@ -40,9 +40,9 @@
 		echo ('<div class="navbar-nav">');
 		if (isset($_SESSION['authenticatedUser'])) {
 			echo ('<span class="navbar-text">Hello ' .  $_SESSION['authenticatedUser'] . "!</span>");
-			echo (make_link($root . "logout.php", "Logout", array("class" => "nav-item nav-link")));
+			echo (make_link($root . "account/logout.php", "Logout", array("class" => "nav-item nav-link")));
 		} else {
-			echo (make_link($root . "login.php", "Login", array("class" => "nav-item nav-link")));
+			echo (make_link($root . "account/login.php", "Login", array("class" => "nav-item nav-link")));
 		}
 
 		echo ('</div>');
