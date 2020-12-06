@@ -43,6 +43,10 @@
 								echo ('<input type="hidden" name="redirect" value="' . $_GET['redirect'] . '">');
 							?>
 						</form>
+                        <div class="form-group">
+                            <button onclick="window.location.href='register.php'" class="btn btn-primary btn-block"> Register </button>
+                        </div>
+                        <a href="forgot-password.php?">forgot password</a>
 					</article>
 				</div>
 			</aside>
