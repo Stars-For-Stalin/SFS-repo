@@ -1,5 +1,6 @@
 <?php
-include 'include/header.php';
+	$path = $_SERVER['DOCUMENT_ROOT'];
+    include $path.'/include/header.php';
 ?>
 
 <body>
@@ -51,4 +52,4 @@ include 'include/header.php';
 		</div>
 	</div>
 </body>
-<?php include 'include/footer.php'; ?>
+<?php include $path.'/include/footer.php'; ?>

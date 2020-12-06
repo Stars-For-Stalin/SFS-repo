@@ -1,9 +1,10 @@
 <?php
-	include 'include/auth.php';
+	$path = $_SERVER['DOCUMENT_ROOT'];
+	include $path.'/include/auth.php';
 	$user = $_SESSION['authenticatedUser'];
 
 	$title = 'Your Account: Stars For Stalin';
-	include 'include/header.php';
+	include $path.'/include/header.php';
 ?>
 
 <body>
@@ -165,4 +166,4 @@
 				?>
     </div>
 </body>
-<?php include 'include/footer.php'; ?>
+<?php include $path.'/include/footer.php'; ?>

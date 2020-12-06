@@ -1,7 +1,7 @@
 <?php
-
+	$path = $_SERVER['DOCUMENT_ROOT'];
 	$title = 'Register Account: Stars For Stalin';
-	include 'include/header.php';
+	include $path.'/include/header.php';
 
 ?>
 
@@ -86,4 +86,4 @@
         </form>
     </div>
     </body>
-<?php include 'include/footer.php'; ?>
+<?php include $path.'/include/footer.php'; ?>

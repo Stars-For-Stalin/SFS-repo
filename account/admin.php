@@ -1,8 +1,9 @@
 <?php
+	$path = $_SERVER['DOCUMENT_ROOT'];
 	$auth_admin_only=true; //value doesn't actually matter
-	include('include/auth.php');
+	include($path.'/include/auth.php');
 	$title = 'Administrator Page: Stars For Stalin';
-	include('include/header.php');
+	include($path.'/include/header.php');
 ?>
 
 <body>
@@ -35,4 +36,4 @@
 	?>
 </div>
 </body>
-<?php include("include/footer.php"); ?>
+<?php include($path."/include/footer.php"); ?>
