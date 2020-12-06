@@ -27,7 +27,7 @@
 					    $price = $prod['price'];
 						$price_str = format_price($price);
 					    $subtotal = $quantity * $price;
-					    $subtotal_str = format_price($subtotal,2);
+					    $subtotal_str = format_price($subtotal);
 					    $remove_btn = "<input class='form-control btn btn-md btn-danger' id='remove-$id' type='submit' value='remove'>";
 
 					    $cells = array();
