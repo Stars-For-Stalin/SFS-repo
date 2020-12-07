@@ -41,6 +41,9 @@
 				} else {
 					oops();
 					echo("<br><h1>That product does not exist!</h1>");
+					echo("<h4 class='text-center'>Redirecting to product listing in 5 seconds.</h4>");
+					jsredirect($root . "listprod.php", 5000);
+					die();
 					//can't find product
 				}
 			} else {
