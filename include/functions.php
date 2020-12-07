@@ -87,7 +87,7 @@ function print_product($prodtuple) {
 	$prod_links .= "<div class='align-vcenter'>";
 	$prod_links .= $prodlink;
 	$prod_links .= "</div><div class='align-rightside'>";
-	$prod_links .= get_addcart_btn($prodtuple, true);
+	$prod_links .= get_addcart_btn($prodtuple);
 	$prod_links .= "</div></div>";
 	$attr = array("class"=>"reduced-padding");
 	array_push($cells, make_cell($prod_links, $attr));
@@ -97,9 +97,9 @@ function print_product($prodtuple) {
 function get_addcart_btn($prodtuple, $leave_page = false){
 	$url=get_addcart_url($prodtuple);
 	if ($leave_page){
-		$html = "<button class='btn btn-md btn-primary' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary leave' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
 	} else {
-		$html = "<button class='btn btn-md btn-primary' onclick='ajaxRequest($url,\"POST\")'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary add_cart' onclick='ajaxRequest(\"$url\",\"POST\")'>Add To Cart</button>";
 	}
 	return $html;
 }
@@ -150,7 +150,7 @@ function print_order_summary($orderData, $orderList) {
 function get_addcart_url($prodtuple) {
 	//id=<>name=<>&price=<>
 	global $root;
-	$url = $root . "addcart.php?id=" . $prodtuple['productId'] . "&name=" . $prodtuple['productName'] . "&price=" . $prodtuple['productPrice'];
+	$url = $root . "addcart.php?id=" . $prodtuple['productId'];
 	return $url;
 }
 function get_product_url($product) {
@@ -164,6 +164,9 @@ function get_product_url($product) {
 }
 function addjs($code) {
 	echo ("<script type='text/javascript'> $code </script>");
+}
+function jsredirect($url,$delay){
+	addjs("setTimeout(function(){window.location.href=\"$url\";},$delay);");
 }
 
 	/**
@@ -266,5 +269,51 @@ function get_custId($userid) {
 			disconnect($con);
 			return ($row['customerId']);
 		}
+	}
+}
+
+function send_email($to, $email_subject, $email_body)
+{
+	if(class_exists('Mail')) {
+		$host = "smtp.mailgun.org";
+		$username = "postmaster@mg.notaserver.me";
+		$password = "9a97160ffd65d37e39478ff548ea72dd-4879ff27-0baa535b";
+		$port = "587";
+
+		//$to = "test@example.com";
+		$email_from = "donotreply@mg.notaserver.me";
+		//$email_subject = "Awesome Subject line" ;
+		//$email_body = "This is the message body" ;
+		$email_address = "donotreply@mg.notaserver.me";
+		$content = "text/html; charset=utf-8";
+		$mime = "1.0";
+
+		$headers = array(
+			'From' => $email_from,
+			'To' => $to,
+			'Subject' => $email_subject,
+			'Reply-To' => $email_address,
+			'MIME-Version' => $mime,
+			'Content-type' => $content
+		);
+
+		$params = array(
+			'host' => $host,
+			'port' => $port,
+			'auth' => true,
+			'username' => $username,
+			'password' => $password
+		);
+
+		$smtp = Mail::factory('smtp', $params);
+		$mail = $smtp->send($to, $headers, $email_body);
+
+		if (PEAR::isError($mail)) {
+			echo("<p>" . $mail->getMessage() . "</p>");
+		} else {
+			//echo ("<p>Message sent successfully!</p>");
+		}
+	} else {
+		debug_to_console("Cannot send email, necessary class does not exist.");
 	}
 }

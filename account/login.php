@@ -1,5 +1,6 @@
 <?php
-include 'include/header.php';
+	$path = $_SERVER['DOCUMENT_ROOT'];
+    include $path.'/include/header.php';
 ?>
 
 <body>
@@ -41,7 +42,11 @@ include 'include/header.php';
 							if (isset($_GET['redirect']))
 								echo ('<input type="hidden" name="redirect" value="' . $_GET['redirect'] . '">');
 							?>
-						</form>
+                            <div class="form-group">
+                                <a href='register.php' class="btn btn-primary btn-block"> Register </a>
+                            </div>
+                            <button type="submit" class="btn btn-link" onclick="this.form.action='forgot-password.php';">forgot password</button>
+                        </form>
 					</article>
 				</div>
 			</aside>
@@ -51,5 +56,4 @@ include 'include/header.php';
 		</div>
 	</div>
 </body>
-
-</html>
+<?php include $path.'/include/footer.php'; ?>

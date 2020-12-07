@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-if (isset($_SESSION["authenticatedUser"])) {
-	$user = $_SESSION["authenticatedUser"];
-} else {
-	header('Location: login.php?redirect=checkout.php');
-}
+include 'include/auth.php';
+
 if (isset($_SESSION['productList'])) {
 	$productList = $_SESSION['productList'];
 }
@@ -26,7 +23,7 @@ include 'include/header.php';
 		}
 
 		$sql_get_custId = 'SELECT customerId FROM customer WHERE userid = ?';
-		$preparedStatement_get_custId = sqlsrv_prepare($con, $sql_get_custId, array(&$user));
+		$preparedStatement_get_custId = sqlsrv_prepare($con, $sql_get_custId, array(&$auth_user));
 		$result_get_custId = sqlsrv_execute($preparedStatement_get_custId);
 		if ($result_get_custId || !empty($result_get_custId)) {
 			while ($row = sqlsrv_fetch_array($preparedStatement_get_custId, SQLSRV_FETCH_ASSOC)) {
@@ -127,6 +124,12 @@ include 'include/header.php';
 				/** Clear session/cart **/
 				if (!$debugging) {
 					$_SESSION['productList'] = null;
+					$cid = get_custId($_SESSION['authenticatedUser']);
+					$sql = "DELETE from incart WHERE customerId = ?";
+					$ps = sqlsrv_prepare($con, $sql, array($cid));
+					if (!sqlsrv_execute($ps)) {
+						oops("SQL update failed.");
+					}
 				}
 			} elseif (!is_numeric($custId)) {
 				echo ("Error: Invalid Customer ID.");
