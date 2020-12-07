@@ -80,10 +80,10 @@
 					<form action="" method="POST">
 						<div class="form-group">
 							<label><label>
-								<input type="password" name="password_entered" class="form-control" value='<?php echo $password;?>'/><?php if ($submit) {if (empty($password)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="password" name="password_entered" class="form-control" value='<?php echo $password;?>'/><?php if (!$submit) {if (empty($password)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary btn-block"> Submit </button>
+							<button type="submit" name="submit" class="btn btn-primary btn-block"> Submit </button>
 						</div>
 					</form>
 				</article>
@@ -105,26 +105,26 @@
 					<form action="" method="POST">
 						<div class="form-group">
 							<label>Address: </label>
-								<input type="text" name="address_entered" class="form-control" value='<?php echo $address;?>'/><?php if ($submit) {if (empty($address)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="text" name="address_entered" class="form-control" value='<?php echo $address;?>'/><?php if (!$submit1) {if (empty($address)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
 							<label>City: </label>
-								<input type="text" name="city_entered" class="form-control" value='<?php echo $city;?>'/><?php if ($submit) {if (empty($city)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="text" name="city_entered" class="form-control" value='<?php echo $city;?>'/><?php if (!$submit1) {if (empty($city)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
 							<label>State: </label>
-								<input type="text" name="state_entered" class="form-control" value='<?php echo $state;?>'/><?php if ($submit) {if (empty($state)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="text" name="state_entered" class="form-control" value='<?php echo $state;?>'/><?php if (!$submit1) {if (empty($state)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
 							<label>Postal Code: </label>
-								<input type="text" name="postalCode_entered" class="form-control" value='<?php echo $postalCode;?>'/><?php if ($submit) {if (empty($postalCode)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="text" name="postalCode_entered" class="form-control" value='<?php echo $postalCode;?>'/><?php if (!$submit1) {if (empty($postalCode)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
 							<label>Country: </label>
-								<input type="text" name="country_entered" class="form-control" value='<?php echo $country;?>'/><?php if ($submit) {if (empty($country)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="text" name="country_entered" class="form-control" value='<?php echo $country;?>'/><?php if (!$submit1) {if (empty($country)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary btn-block"> Register </button>
+							<button type="submit" name="submit1" class="btn btn-primary btn-block"> Register </button>
 						</div>
 					</form>
 				</article>
