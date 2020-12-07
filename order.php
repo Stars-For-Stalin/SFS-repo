@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-if (isset($_SESSION["authenticatedUser"])) {
-	$user = $_SESSION["authenticatedUser"];
-} else {
-	header('Location: login.php?redirect=checkout.php');
-}
+include 'include/auth.php';
+
 if (isset($_SESSION['productList'])) {
 	$productList = $_SESSION['productList'];
 }
