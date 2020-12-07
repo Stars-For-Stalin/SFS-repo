@@ -8,7 +8,7 @@
 ?>
 
 <body>
-    <div class='container'>
+    <div class="container">
 		<?php
 			// TODO: Print Customer information
 			$con = try_connect();
@@ -16,55 +16,29 @@
 				$sql = "SELECT * FROM customer WHERE userid = ?;";
 				$preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
 				$result = sqlsrv_execute($preparedStatement);
-				$row = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC);
-				echo "
-				<table class='table table-bordered'>
-				<tr>
-				<th>Id</th>
-				<td>" . $row['customerId'] . "</td>
-				</tr>
-				<tr>
-				<th>First Name</th>
-				<td>" . $row['firstName'] . "</td>
-				</tr>
-				<tr>
-				<th>Last Name</th>
-				<td>" . $row['lastName'] . "</td>
-				</tr>
-				<tr>
-				<th>Email</th>
-				<td>" . $row['email'] . "</td>
-				</tr>
-				<tr>
-				<th>Phone</th>
-				<td>" . $row['phonenum'] . "</td>
-				</tr>
-				<tr>
-				<th>Address</th>
-				<td>" . $row['address'] . "</td>
-				</tr>
-				<tr>
-				<th>City</th>
-				<td>" . $row['city'] . "</td>
-				</tr>
-				<tr>
-				<th>State</th>
-				<td>" . $row['state'] . "</td>
-				</tr>
-				<tr>
-				<th>Postal Code</th>
-				<td>" . $row['postalCode'] . "</td>
-				</tr>
-				<tr>
-				<th>Country</th>
-				<td>" . $row['country'] . "</td>
-				</tr>
-				<tr>
-				<th>User id</th>
-				<td>" . $user . "</td>
-				</tr>
-				<tr>
-				</table>";
+				$tuple = sqlsrv_fetch_array($preparedStatement, SQLSRV_FETCH_ASSOC);
+				$order_align = array("class"=>"text-left");
+				$make_row_pair=function($title,$value,$align=null){
+					$attr = array("scope"=>"col");
+					$cells=array();
+					array_push($cells,make_cell($title, $attr, 'th'));
+					array_push($cells,make_cell($value, $align));
+					return make_row($cells);
+				};
+
+				echo ("<h1>Your Info</h1>");
+				$attr_t1 = array("style"=>"width:40%","class"=>"table table-bordered");
+				$rows = array();
+				array_push($rows, $make_row_pair("Customer Id",$tuple['customerId'],$order_align));
+				array_push($rows, $make_row_pair("First Name",$tuple['firstName'],$order_align));
+				array_push($rows, $make_row_pair("Last Name",$tuple['lastName'],$order_align));
+				array_push($rows, $make_row_pair("Address",$tuple['address'],$order_align));
+				array_push($rows, $make_row_pair("City",$tuple['city'],$order_align));
+				array_push($rows, $make_row_pair("State",$tuple['state'],$order_align));
+				array_push($rows, $make_row_pair("Postal Code",$tuple['postalCode'],$order_align));
+				array_push($rows, $make_row_pair("Country",$tuple['country'],$order_align));
+				array_push($rows, $make_row_pair("User id",$user,$order_align));
+				echo(make_table($rows,$attr_t1));
 
 				$submit = $_POST['submit'];
 				$password = $_POST['password_entered'];
@@ -98,72 +72,72 @@
 				disconnect($con);
 			}
 		?>
-        <form action="" method="POST">
 
-            <table>
-                <tr><td>Change Password: </td>
+		<div class="row mt-4">
+			<div class="card">
+				<article class="card-body">
+				<h4 class="card-title mb-4 mt-1">Change Password</h4>
+					<form action="" method="POST">
+						<div class="form-group">
+							<label><label>
+								<input type="password" name="password_entered" class="form-control" value='<?php echo $password;?>'/><?php if ($submit) {if (empty($password)) { echo "* This field cannot be left empty";   } } ?>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-block"> Submit </button>
+						</div>
+					</form>
+				</article>
+			</div>
+		</div>
 
-                    <td>
-                        <input type="password" name="password_entered" value='<?php echo $password;?>'/><?php if ($submit) {if (empty($password)) { echo "* This field cannot be left empty";   } } ?>
-                    </td></tr>
-            </table>
+		<?php
+			if ($check == 1) {
+				echo "You have successfully changed your password<br>";
+				echo "Please re-login <a href='http://localhost/account/login.php'>here.</a>";
+			}
+		?>
+		<br><br>
 
+		<div class="row mt-4">
+			<div class="card">
+				<article class="card-body">
+				<h4 class="card-title mb-4 mt-1">Change Address</h4>
+					<form action="" method="POST">
+						<div class="form-group">
+							<label>Address: </label>
+								<input type="text" name="address_entered" class="form-control" value='<?php echo $address;?>'/><?php if ($submit) {if (empty($address)) { echo "* This field cannot be left empty";   } } ?>
+						</div>
+						<div class="form-group">
+							<label>City: </label>
+								<input type="text" name="city_entered" class="form-control" value='<?php echo $city;?>'/><?php if ($submit) {if (empty($city)) { echo "* This field cannot be left empty";   } } ?>
+						</div>
+						<div class="form-group">
+							<label>State: </label>
+								<input type="text" name="state_entered" class="form-control" value='<?php echo $state;?>'/><?php if ($submit) {if (empty($state)) { echo "* This field cannot be left empty";   } } ?>
+						</div>
+						<div class="form-group">
+							<label>Postal Code: </label>
+								<input type="text" name="postalCode_entered" class="form-control" value='<?php echo $postalCode;?>'/><?php if ($submit) {if (empty($postalCode)) { echo "* This field cannot be left empty";   } } ?>
+						</div>
+						<div class="form-group">
+							<label>Country: </label>
+								<input type="text" name="country_entered" class="form-control" value='<?php echo $country;?>'/><?php if ($submit) {if (empty($country)) { echo "* This field cannot be left empty";   } } ?>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary btn-block"> Register </button>
+						</div>
+					</form>
+				</article>
+			</div>
+		</div>
 
-            <br><br>
-            <input type="submit" name="submit" value="Change Password"/><br><br>
-
-			<?php
-				if ($check == 1) {
-					echo "You have successfully changed your password<br>";
-					echo "Please re-login <a href='http://localhost/login.php'>here.</a>";
-				}
-			?>
-
-
-            <form action="" method="POST">
-
-                <table>
-                    <tr><td>Change Address: </td>
-
-                        <td>
-                            <input type="text" name="address_entered" value='<?php echo $address;?>'/><?php if ($submit1) {if (empty($address)) { echo "* This field cannot be left empty";   } } ?>
-                        </td></tr><br>
-
-                    <tr><td>Change City: </td>
-
-                        <td>
-                            <input type="text" name="city_entered" value='<?php echo $city;?>'/><?php if ($submit1) {if (empty($city)) { echo "* This field cannot be left empty";   } } ?>
-                        </td></tr><br>
-
-                    <tr><td>Change State: </td>
-
-                        <td>
-                            <input type="text" name="state_entered" value='<?php echo $state;?>'/><?php if ($submit1) {if (empty($state)) { echo "* This field cannot be left empty";   } } ?>
-                        </td></tr><br>
-
-                    <tr><td>Change Postal Code: </td>
-
-                        <td>
-                            <input type="text" name="postalCode_entered" value='<?php echo $postalCode;?>'/><?php if ($submit1) {if (empty($postalCode)) { echo "* This field cannot be left empty";   } } ?>
-                        </td></tr><br>
-
-                    <tr><td>Change Country: </td>
-
-                        <td>
-                            <input type="text" name="country_entered" value='<?php echo $country;?>'/><?php if ($submit1) {if (empty($country)) { echo "* This field cannot be left empty";   } } ?>
-                        </td></tr>
-                </table>
-
-
-                <br><br>
-                <input type="submit" name="submit1" value="Change Address"/><br><br>
-
-				<?php
-					if ($check1 == 1) {
-						echo "You have successfully changed your address<br>";
-						echo "Please refresh the page to see changes<br>";
-					}
-				?>
+		<?php
+			if ($check1 == 1) {
+				echo "You have successfully changed your address<br>";
+				echo "Please refresh the page to see changes<br>";
+			}
+		?>
+		<br><br>
     </div>
 </body>
 <?php include $path.'/include/footer.php'; ?>
