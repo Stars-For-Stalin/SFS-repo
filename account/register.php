@@ -44,22 +44,26 @@
 					}
 				}
 
-				if   ((!empty($firstName))&&(!empty($lastName))&&(!empty($email))&&(!empty($phone))&&(!empty($address))&&(!empty($city))&&(!empty($state))&&(!empty($postalCode))&&(!empty($country))&&(!empty($username))&&(!empty($password))) {
+				if ((!empty($firstName))&&(!empty($lastName))&&(!empty($email))&&(!empty($phone))&&(!empty($address))&&(!empty($city))&&(!empty($state))&&(!empty($postalCode))&&(!empty($country))&&(!empty($username))&&(!empty($password))) {
 					if ($count == 0) {
 						$sql1 = "INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 						$prepared_sql1 = sqlsrv_prepare($con, $sql1, array(&$firstName, &$lastName, &$email, &$phone, &$address, &$city, &$state, &$postalCode, &$country, &$username, &$password));
 						$result_sql1 = sqlsrv_execute($prepared_sql1);
 						$check = 1;
 					}
+					if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+					    $invalid_email = true;
+                    }
 				}
 
 				disconnect($con);
-                if ($check == 1) {
+
+				if ($check == 1) {
                     echo('<div class="container"><br>');
                     echo "<h5 class='text-center'>You have been successfully registered</h5><br>";
                     $msg = "Hello $firstName, your account $username has been created.";
                     send_email($email,"Welcome to Stars for Stalin",$msg);
-                    echo "<h5 class='text-center'>Please go to the <a href='http://localhost/login.php'>login</a> page to now log into your account</h5>";
+                    echo "<h5 class='text-center'>Please go to the <a href='$root"."account/login.php'>login</a> page to now log into your account</h5>";
                     echo("</div>");
                 } else {
             ?>
@@ -77,7 +81,7 @@
 						</div>
 						<div class="form-group">
 							<label>Email: </label>
-								<input type="text" name="email_entered" class="form-control" value='<?php echo $email;?>'/><?php if (!$submit) {if (empty($email)) { echo "* This field cannot be left empty";   } } ?>
+								<input type="text" name="email_entered" class="form-control" value='<?php echo $email;?>'/><?php if (!$submit) {if (empty($email)) { echo "* This field cannot be left empty"; } elseif ($invalid_email) {echo "* Please provide a valid email.";} } ?>
 						</div>
 						<div class="form-group">
 							<label>Phone Number: </label>
