@@ -23,7 +23,7 @@ include 'include/header.php';
 		}
 
 		$sql_get_custId = 'SELECT customerId FROM customer WHERE userid = ?';
-		$preparedStatement_get_custId = sqlsrv_prepare($con, $sql_get_custId, array(&$user));
+		$preparedStatement_get_custId = sqlsrv_prepare($con, $sql_get_custId, array(&$auth_user));
 		$result_get_custId = sqlsrv_execute($preparedStatement_get_custId);
 		if ($result_get_custId || !empty($result_get_custId)) {
 			while ($row = sqlsrv_fetch_array($preparedStatement_get_custId, SQLSRV_FETCH_ASSOC)) {
