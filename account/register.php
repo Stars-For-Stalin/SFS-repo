@@ -68,7 +68,7 @@
 				<h4 class="card-title mb-4 mt-1">Register</h4>
 					<form action="" method="POST">
 						<div class="form-group">
-							<label class="field" for="firstname_entered">First name: </label>
+							<label>First name: </label>
 								<input type="text" name="firstname_entered" class="form-control" value='<?php echo $firstName;?>'/><?php if ($submit) {if (empty($firstName)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
