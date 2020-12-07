@@ -34,7 +34,7 @@
 						$preparedStatement = sqlsrv_query($con, $sql, array());
 					} else {
 						$sql = "SELECT * FROM ordersummary JOIN customer ON ordersummary.customerId = customer.customerId WHERE customer.userid = ?";
-						$preparedStatement = sqlsrv_prepare($con, $sql, array(&$user));
+						$preparedStatement = sqlsrv_prepare($con, $sql, array(&$auth_user));
 						$results = sqlsrv_execute($preparedStatement);
 					}
 
