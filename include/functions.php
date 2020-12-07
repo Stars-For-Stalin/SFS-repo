@@ -151,7 +151,7 @@ function print_order_summary($orderData, $orderList) {
 function get_addcart_url($prodtuple) {
 	//id=<>name=<>&price=<>
 	global $root;
-	$url = $root . "addcart.php?id=" . $prodtuple['productId'] . "&name=" . $prodtuple['productName'] . "&price=" . $prodtuple['productPrice'];
+	$url = $root . "addcart.php?id=" . $prodtuple['productId'];
 	return $url;
 }
 function get_product_url($product) {
@@ -165,6 +165,9 @@ function get_product_url($product) {
 }
 function addjs($code) {
 	echo ("<script type='text/javascript'> $code </script>");
+}
+function jsredirect($url,$delay){
+	addjs("setTimeout(function(){window.location.href=\"$url\";},$delay);");
 }
 
 	/**
