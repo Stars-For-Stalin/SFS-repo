@@ -96,9 +96,9 @@ function print_product($prodtuple) {
 function get_addcart_btn($prodtuple, $leave_page = false){
 	$url=get_addcart_url($prodtuple);
 	if ($leave_page){
-		$html = "<button class='btn btn-md btn-primary' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary leave' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
 	} else {
-		$html = "<button class='btn btn-md btn-primary' onclick='ajaxRequest(\"$url\",\"POST\")'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary add_cart' onclick='ajaxRequest(\"$url\",\"POST\")'>Add To Cart</button>";
 	}
 	return $html;
 }
