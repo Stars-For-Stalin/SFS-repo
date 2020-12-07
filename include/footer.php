@@ -4,7 +4,7 @@
         <div class="navbar-nav mr-auto">
             <?php
                 if($_SESSION['authenticatedUser'] == "admin") {
-					echo('<h6 class="text-left"><a class="nav-item nav-link" href="account/admin.php">Admin Panel</a></h6>');
+					echo('<h6 class="text-left"><a class="nav-item nav-link" href="/account/admin.php">Admin Panel</a></h6>');
 				}
             ?>
         </div>
