@@ -21,6 +21,8 @@
 			}
 			echo("Redirecting to login in 3 seconds..<br>");
 			addjs("setTimeout(function(){window.location.href=\"$loginurl\";},3000);");
+		} else {
+			oops();
 		}
 	}
 	include $path.'/include/footer.php';
