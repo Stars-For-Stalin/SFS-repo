@@ -127,6 +127,12 @@ include 'include/header.php';
 				/** Clear session/cart **/
 				if (!$debugging) {
 					$_SESSION['productList'] = null;
+					$cid = get_custId($_SESSION['authenticatedUser']);
+					$sql = "DELETE from incart WHERE customerId = ?";
+					$ps = sqlsrv_prepare($con, $sql, array($cid));
+					if (!sqlsrv_execute($ps)) {
+						oops("SQL update failed.");
+					}
 				}
 			} elseif (!is_numeric($custId)) {
 				echo ("Error: Invalid Customer ID.");
