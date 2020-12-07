@@ -4,5 +4,9 @@
 	unset($_SESSION['authenticatedUser']);
 
 	$_SESSION['loginMessage'] = "You've succesfully logged out!";
-
-	header('Location: /account/login.php');
+	if(isset($_GET['redirect'])) {
+		$location = $_GET['redirect'];
+		header("Location: $location");
+	} else {
+		header('Location: /account/login.php');
+	}
