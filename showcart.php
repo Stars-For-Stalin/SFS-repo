@@ -7,14 +7,32 @@
 	}
 
 	$title = 'Your Shopping Cart: Stars For Stalin';
-	include 'include/header.php'
+	include 'include/header.php';
+	$con = try_connect();
+	if($_SESSION['authenticatedUser']) {
+		$cid = get_custId($_SESSION['authenticatedUser']);
+		if ($con) {
+			$sql = "SELECT * from incart WHERE customerId = ?";
+			$ps = sqlsrv_prepare($con,$sql,array($cid));
+			if(sqlsrv_execute($ps)){
+				while ($cart_item = sqlsrv_fetch_array($ps, SQLSRV_FETCH_ASSOC)) {
+                    $name = $cart_item['productName'];
+                    $pid = $cart_item['productId'];
+                    $quantity = $cart_item['quantity'];
+                    $price = $cart_item['price'];
+					$_SESSION['productList'][$pid] = array("id" => $pid, "name" => $name, "price" => $price, "quantity" => $quantity);
+				}
+			}
+		} else {
+			oops("Couldn't connect to database. Can't restore cart from DB");
+		}
+	}
 ?>
 
 <body>
 	<div class='container'>
 		<form method='get' action="modifycart.php">
 			<?php
-				$productList = null;
 				if (isset($_SESSION['productList'])) {
 					$productList = $_SESSION['productList'];
 					echo ("<h1>Your Shopping Cart</h1>");
