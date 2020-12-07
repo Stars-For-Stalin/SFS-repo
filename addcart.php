@@ -22,9 +22,10 @@
 					$name = $product['productName'];
 					$price = $product['productPrice'];
 					$cid = get_custId($_SESSION['authenticatedUser']);
+					debug_to_console($product);
 					if (isset($productList[$id])) {
-						$quantity = $productList[$id]['quantity'];
-						$productList[$id]['quantity'] = $productList[$id]['quantity'] + 1;
+						$quantity = $productList[$id]['quantity'] + 1;
+						$productList[$id]['quantity'] = $quantity;
 						if(isset($_SESSION['authenticatedUser'])){
 							$sql2 = "UPDATE incart SET productName=?,quantity=?,price=? WHERE customerId = ? and productId = ?";
 							$ps = sqlsrv_prepare($con,$sql2,array($name,$quantity,$price,$cid,$id));
