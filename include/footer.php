@@ -5,7 +5,9 @@
             <?php
                 if($_SESSION['authenticatedUser'] == "admin") {
 					echo('<h6 class="text-left"><a class="nav-item nav-link" href="/account/admin.php">Admin Panel</a></h6>');
-				}
+				} else {
+					echo('<h6 class="text-center align-vcenter pb-2">Stars for Stalin is a paid subsidiary of the <a href="https://umbrellacorporation.com/">Umbrella Corp</a></h6>');
+                }
             ?>
         </div>
     </nav>
