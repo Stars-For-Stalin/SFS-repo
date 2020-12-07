@@ -124,7 +124,7 @@
 								<input type="text" name="country_entered" class="form-control" value='<?php echo $country;?>'/><?php if (!$submit1) {if (empty($country)) { echo "* This field cannot be left empty";   } } ?>
 						</div>
 						<div class="form-group">
-							<button type="submit" name="submit1" class="btn btn-primary btn-block"> Register </button>
+							<button type="submit" name="submit1" class="btn btn-primary btn-block"> Submit </button>
 						</div>
 					</form>
 				</article>
