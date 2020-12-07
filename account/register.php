@@ -54,14 +54,16 @@
 				}
 
 				disconnect($con);
-
-				if ($check == 1) {
-					echo "You have been successfully registered<br>";
-					echo "Please go to the <a href='http://localhost/login.php'>login</a> page to now log into your account";
-				}
-
-			?>
-			<div class="card">
+                if ($check == 1) {
+                    echo('<div class="container"><br>');
+                    echo "<h5 class='text-center'>You have been successfully registered</h5><br>";
+                    $msg = "Hello $firstName, your account $username has been created.";
+                    send_email($email,"Welcome to Stars for Stalin",$msg);
+                    echo "<h5 class='text-center'>Please go to the <a href='http://localhost/login.php'>login</a> page to now log into your account</h5>";
+                    echo("</div>");
+                } else {
+            ?>
+			    <div class="card">
 				<article class="card-body">
 				<h4 class="card-title mb-4 mt-1">Register</h4>
 					<form action="" method="POST">
@@ -116,6 +118,7 @@
 					</form>
 				</article>
 			</div>
+            <?php }?>
 		</div>
 	</div>
 </body>

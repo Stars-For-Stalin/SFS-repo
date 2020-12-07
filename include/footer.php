@@ -1,3 +1,4 @@
+<br><br><br><br>
 <footer class="fixed-bottom">
     <nav class="footer navbar-light bg-light">
         <div class="navbar-nav mr-auto">
@@ -8,5 +9,6 @@
             ?>
         </div>
     </nav>
+    <h6 class="text-center align-vcenter">Stars for Stalin is a paid subsidiary of the <a href="https://umbrellacorporation.com/">Umbrella Corp</a></h6>
 </footer>
 </html>

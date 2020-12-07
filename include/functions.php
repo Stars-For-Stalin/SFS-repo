@@ -98,9 +98,9 @@ function print_product($prodtuple) {
 function get_addcart_btn($prodtuple, $leave_page = false){
 	$url=get_addcart_url($prodtuple);
 	if ($leave_page){
-		$html = "<button class='btn btn-md btn-primary' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary leave' onclick='window.location.href=\"$url\"'>Add To Cart</button>";
 	} else {
-		$html = "<button class='btn btn-md btn-primary' onclick='ajaxRequest(\"$url\",\"POST\")'>Add To Cart</button>";
+		$html = "<button class='btn btn-md btn-primary add_cart' onclick='ajaxRequest(\"$url\",\"POST\")'>Add To Cart</button>";
 	}
 	return $html;
 }
@@ -272,45 +272,46 @@ function get_custId($userid) {
 
 function send_email($to, $email_subject, $email_body)
 {
-    $host = "smtp.mailgun.org";
-    $username = "postmaster@mg.notaserver.me";
-    $password = "9a97160ffd65d37e39478ff548ea72dd-4879ff27-0baa535b";
-    $port = "587";
+	if(class_exists('Mail')) {
+		$host = "smtp.mailgun.org";
+		$username = "postmaster@mg.notaserver.me";
+		$password = "9a97160ffd65d37e39478ff548ea72dd-4879ff27-0baa535b";
+		$port = "587";
 
-    //$to = "test@example.com";
-    $email_from = "donotreply@mg.notaserver.me";
-    //$email_subject = "Awesome Subject line" ;
-    //$email_body = "This is the message body" ;
-    $email_address = "donotreply@mg.notaserver.me";
-    $content = "text/html; charset=utf-8";
-    $mime = "1.0";
+		//$to = "test@example.com";
+		$email_from = "donotreply@mg.notaserver.me";
+		//$email_subject = "Awesome Subject line" ;
+		//$email_body = "This is the message body" ;
+		$email_address = "donotreply@mg.notaserver.me";
+		$content = "text/html; charset=utf-8";
+		$mime = "1.0";
 
-    $headers = array(
-        'From' => $email_from,
-        'To' => $to,
-        'Subject' => $email_subject,
-        'Reply-To' => $email_address,
-        'MIME-Version' => $mime,
-        'Content-type' => $content
-    );
+		$headers = array(
+			'From' => $email_from,
+			'To' => $to,
+			'Subject' => $email_subject,
+			'Reply-To' => $email_address,
+			'MIME-Version' => $mime,
+			'Content-type' => $content
+		);
 
-    $params = array(
-        'host' => $host,
-        'port' => $port,
-        'auth' => true,
-        'username' => $username,
-        'password' => $password
-    );
+		$params = array(
+			'host' => $host,
+			'port' => $port,
+			'auth' => true,
+			'username' => $username,
+			'password' => $password
+		);
 
-    $smtp = Mail::factory('smtp', $params);
-    $mail = $smtp->send($to, $headers, $email_body);
+		$smtp = Mail::factory('smtp', $params);
+		$mail = $smtp->send($to, $headers, $email_body);
 
-    if (PEAR::isError($mail))
-    {
-        echo ("<p>" . $mail->getMessage() . "</p>");
-    }
-    else
-    {
-        //echo ("<p>Message sent successfully!</p>");
-    }
+		if (PEAR::isError($mail)) {
+			echo("<p>" . $mail->getMessage() . "</p>");
+		} else {
+			//echo ("<p>Message sent successfully!</p>");
+		}
+	} else {
+		debug_to_console("Cannot send email, necessary class does not exist.");
+	}
 }

@@ -29,12 +29,14 @@
 
 		echo ('<div class="navbar-nav mr-auto">');
 		echo (make_link($root . "listprod.php", "Browse Stars", array("class" => "nav-item nav-link")));
+		echo (make_link($root . "account/info.php", "Your Info", array("class" => "nav-item nav-link")));
 		if ($_SESSION['authenticatedUser'] == "admin"){
 			echo (make_link($root . "listorder.php", "All Orders", array("class" => "nav-item nav-link")));
-        } else {
+		} else {
 			echo (make_link($root . "listorder.php", "Your Orders", array("class" => "nav-item nav-link")));
 		}
 		echo (make_link($root . "showcart.php", "View Cart", array("class" => "nav-item nav-link")));
+		echo (make_link($root . "checkout.php", "Checkout", array("class" => "nav-item nav-link")));
 		echo ('</div>');
 
 		echo ('<div class="navbar-nav">');
@@ -43,6 +45,7 @@
 			echo (make_link($root . "account/logout.php", "Logout", array("class" => "nav-item nav-link")));
 		} else {
 			echo (make_link($root . "account/login.php", "Login", array("class" => "nav-item nav-link")));
+			echo (make_link($root . "account/register.php", "Register", array("class" => "nav-item nav-link")));
 		}
 
 		echo ('</div>');
